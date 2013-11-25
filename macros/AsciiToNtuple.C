@@ -1,0 +1,4 @@
+void AsciiToNtuple()
+{
+	return;
+}
