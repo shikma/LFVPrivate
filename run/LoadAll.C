@@ -15,4 +15,5 @@ void LoadAll()
 
     //Load additional macros
     gROOT->ProcessLine(".L ../macros/AsciiToNtuple.C+");
+    gROOT->ProcessLine(".L ../macros/Looper.C+");
 }
