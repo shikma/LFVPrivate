@@ -1,3 +1,4 @@
+
 #include "TFile.h"
 #include "TTree.h"
 
@@ -5,26 +6,33 @@
 #include <fstream>
 #include <string>
 #include <cstdio>
+#include <algorithm>
+#include <vector>
+
 using namespace std;
+
+#include "LFVPrivate/Functions_Data.h"
+#include "LFVPrivate/Tools.h"
+
 
 void AsciiToNtuple()
 {
 	/*
 	 *   # typ  eta  phi    pT tag  cal02  cal03  cal04  trk02  trk03  trk04
 
-      1        0        0 1.0000
-  1  0  0.25 6.18   10.7  0   0.00   0.00   0.00   0.00   0.00   0.00
-  2 -2 -1.05 1.32   60.0  0   0.00   0.00   0.00   0.00   0.00   0.00
-  3  2 -0.15 5.34   23.7  0   0.02   0.02   5.29   0.00   0.00   0.00
-  4  4  1.54 3.26   26.7  0   0.00   0.00   0.00   0.00   0.00   0.00
-  5  6  0.00 5.01   20.0  0   0.00   0.00   0.00   0.00   0.00   0.00
+			  1        0        0 1.0000
+		  1  0  0.25 6.18   10.7  0   0.00   0.00   0.00   0.00   0.00   0.00
+		  2 -2 -1.05 1.32   60.0  0   0.00   0.00   0.00   0.00   0.00   0.00
+		  3  2 -0.15 5.34   23.7  0   0.02   0.02   5.29   0.00   0.00   0.00
+		  4  4  1.54 3.26   26.7  0   0.00   0.00   0.00   0.00   0.00   0.00
+		  5  6  0.00 5.01   20.0  0   0.00   0.00   0.00   0.00   0.00   0.00
 
-      2        0        0 1.0000
-  1 -3 -0.62 1.80   41.6  0   0.00   0.00   0.00   0.00   0.00   1.00
-  2  2 -0.01 5.55   70.5  0   0.00   0.00   2.09   0.00   0.00   0.00
-  3  4 -0.62 1.84   40.8  3   0.00   0.00   0.00   0.00   0.00   0.00
-  4  4 -1.29 3.13   20.2  0   0.00   0.00   0.00   0.00   0.00   0.00
-  5  6  0.00 1.09   25.3  0   0.00   0.00   0.00   0.00   0.00   0.00
+			  2        0        0 1.0000
+		  1 -3 -0.62 1.80   41.6  0   0.00   0.00   0.00   0.00   0.00   1.00
+		  2  2 -0.01 5.55   70.5  0   0.00   0.00   2.09   0.00   0.00   0.00
+		  3  4 -0.62 1.84   40.8  3   0.00   0.00   0.00   0.00   0.00   0.00
+		  4  4 -1.29 3.13   20.2  0   0.00   0.00   0.00   0.00   0.00   0.00
+		  5  6  0.00 1.09   25.3  0   0.00   0.00   0.00   0.00   0.00   0.00
 	 */
 	/*
 	 * 0 for photons, +/-1 for electrons, +/-2 for muons, +/-3 hadronic tau 4 for jets, and 6 for MET
@@ -34,68 +42,68 @@ void AsciiToNtuple()
    int evt = -999;
 
    int nPhoton = 0;
-   double photonPt[kMaxTrack];
-   double photonEta[kMaxTrack];
-   double photonPhi[kMaxTrack];
+   float photonPt[kMaxTrack];
+   float photonEta[kMaxTrack];
+   float photonPhi[kMaxTrack];
 
    int nElectron = 0;
-   double electronPt[kMaxTrack];
-   double electronEta[kMaxTrack];
-   double electronPhi[kMaxTrack];
+   float electronPt[kMaxTrack];
+   float electronEta[kMaxTrack];
+   float electronPhi[kMaxTrack];
    int electronQ[kMaxTrack];
    int electronTag[kMaxTrack];
-   double electronCal02[kMaxTrack];
-   double electronCal03[kMaxTrack];
-   double electronCal04[kMaxTrack];
-   double electronTrk02[kMaxTrack];
-   double electronTrk03[kMaxTrack];
-   double electronTrk04[kMaxTrack];
+   float electronCal02[kMaxTrack];
+   float electronCal03[kMaxTrack];
+   float electronCal04[kMaxTrack];
+   float electronTrk02[kMaxTrack];
+   float electronTrk03[kMaxTrack];
+   float electronTrk04[kMaxTrack];
 
    int nMuon = 0;
-   double muonPt[kMaxTrack];
-   double muonEta[kMaxTrack];
-   double muonPhi[kMaxTrack];
+   float muonPt[kMaxTrack];
+   float muonEta[kMaxTrack];
+   float muonPhi[kMaxTrack];
    int muonQ[kMaxTrack];
    int muonTag[kMaxTrack];
-   double muonCal02[kMaxTrack];
-   double muonCal03[kMaxTrack];
-   double muonCal04[kMaxTrack];
-   double muonTrk02[kMaxTrack];
-   double muonTrk03[kMaxTrack];
-   double muonTrk04[kMaxTrack];
+   float muonCal02[kMaxTrack];
+   float muonCal03[kMaxTrack];
+   float muonCal04[kMaxTrack];
+   float muonTrk02[kMaxTrack];
+   float muonTrk03[kMaxTrack];
+   float muonTrk04[kMaxTrack];
 
    int nTau = 0;
-   double tauPt[kMaxTrack];
-   double tauEta[kMaxTrack];
-   double tauPhi[kMaxTrack];
+   float tauPt[kMaxTrack];
+   float tauEta[kMaxTrack];
+   float tauPhi[kMaxTrack];
    int tauQ[kMaxTrack];
    int tauTag[kMaxTrack];
-   double tauCal02[kMaxTrack];
-   double tauCal03[kMaxTrack];
-   double tauCal04[kMaxTrack];
-   double tauTrk02[kMaxTrack];
-   double tauTrk03[kMaxTrack];
-   double tauTrk04[kMaxTrack];
+   float tauCal02[kMaxTrack];
+   float tauCal03[kMaxTrack];
+   float tauCal04[kMaxTrack];
+   float tauTrk02[kMaxTrack];
+   float tauTrk03[kMaxTrack];
+   float tauTrk04[kMaxTrack];
 
    int nJet = 0;
-   double jetPt[kMaxTrack];
-   double jetEta[kMaxTrack];
-   double jetPhi[kMaxTrack];
+   float jetPt[kMaxTrack];
+   float jetEta[kMaxTrack];
+   float jetPhi[kMaxTrack];
    int jetQ[kMaxTrack];
    int jetTag[kMaxTrack];
-   double jetCal02[kMaxTrack];
-   double jetCal03[kMaxTrack];
-   double jetCal04[kMaxTrack];
-   double jetTrk02[kMaxTrack];
-   double jetTrk03[kMaxTrack];
-   double jetTrk04[kMaxTrack];
+   float jetCal02[kMaxTrack];
+   float jetCal03[kMaxTrack];
+   float jetCal04[kMaxTrack];
+   float jetTrk02[kMaxTrack];
+   float jetTrk03[kMaxTrack];
+   float jetTrk04[kMaxTrack];
 
-   double metPt = -999.;
-   double metEta = -999.;
-   double metPhi = -999.;
+   float metPt = -999.;
+   float metEta = -999.;
+   float metPhi = -999.;
 
 
-   TFile f("Yevgeny.root","recreate");
+   TFile f("Z_noSmearing.root","recreate");
    TTree *t = new TTree("t","Reconst ntuple");
    t->Branch("evt",&evt,"evt/I");
    t->Branch("nPhoton",&nPhoton,"nPhoton/I");
@@ -155,8 +163,9 @@ void AsciiToNtuple()
    t->Branch("metPhi",&metPhi,"metPhi/I");
 
    string line;
-   ifstream infile ("../SimOutput/H2tm.cmnd.8.lhco");
-   while (!infile.eof() )
+   ifstream infile ("../exampleOutput/Z.cmnd.ns.8.lhco");
+
+   while (!infile.eof())
    {
 	   int number = -999;
 	   int type = -999;
@@ -172,8 +181,10 @@ void AsciiToNtuple()
 	   float trk04 = -999.;
 
        getline (infile,line);
-       sscanf(line.c_str(),"%d %d %f %f %f %d %f %f %f %f %f %f",&number,&type,&eta,&phi,&pT,&tag,&cal02,&cal03,&cal04,&trk02,&trk03,&trk04);
-       cout << line << " --> " << number << " " << trk04 << endl;
+
+       sscanf(line.c_str(),"%d %d %f %f %f %d %f %f %f %f %f %f",&number,&type,&eta,&phi,&pT,
+    		   &tag,&cal02,&cal03,&cal04,&trk02,&trk03,&trk04);
+//       cout << line << " --> " << number << " " << trk04 << endl;
 
        //empty line
        if(number == -999 && trk04 == -999) continue;
@@ -181,11 +192,246 @@ void AsciiToNtuple()
        //new event
        if(number != -999 && trk04 == -999)
        {
+
     	   if(evt != -999)
     	   {
+    		   //SORT variables by pT
+    		   //sort photons
+    	   	   vector<int> photonIndex;
+    	   	   vector<float> photon_Pt;
+    	   	   for (int i = 0 ; i < nPhoton ; i++) {
+    	   		   photonIndex.push_back(i);
+    	   		   photon_Pt.push_back(photonPt[i]);
+    	   	   }
+    	   	   Tools tool(photon_Pt);
+    	   	   sort(photonIndex.begin(), photonIndex.end(),tool);
+
+    	   	   float p_tempPt[nPhoton];
+    	   	   float p_tempEta[nPhoton];
+    	   	   float p_tempPhi[nPhoton];
+
+    	   	   for (int i = 0 ; i < nPhoton ; i++) {
+    	   		   p_tempPt[i] = photonPt[i];
+    	   		   p_tempEta[i] = photonEta[i];
+    	   		   p_tempPhi[i] = photonPhi[i];
+    	   	   }
+    	   	   for (int i = 0 ; i < nPhoton ; i++){
+    	   		   photonPt[i] = p_tempPt[photonIndex[i]];
+    	   		   photonEta[i] = p_tempEta[photonIndex[i]];
+    	   		   photonPhi[i] = p_tempPhi[photonIndex[i]];
+    	   	   }
+
+    	   	   //sort electrons
+    	   	   vector<int> eleIndex;
+    	   	   vector<float> ele_Pt;
+    	   	   for (int i = 0 ; i < nElectron ; i++) {
+    	   		   eleIndex.push_back(i);
+    	   		   ele_Pt.push_back(electronPt[i]);
+    	   	   }
+    	   	   tool.Setv_pt(ele_Pt);
+    	   	   sort(eleIndex.begin(), eleIndex.end(),tool);
+
+    	   	   float e_tempPt[nElectron];
+    	   	   float e_tempEta[nElectron];
+    	   	   float e_tempPhi[nElectron];
+    	   	   float e_tempQ[nElectron];
+    	   	   float e_tempTag[nElectron];
+    	   	   float e_tempCal02[nElectron];
+    	   	   float e_tempCal03[nElectron];
+    	   	   float e_tempCal04[nElectron];
+    	   	   float e_tempTrk02[nElectron];
+    	   	   float e_tempTrk03[nElectron];
+    	   	   float e_tempTrk04[nElectron];
+
+
+        	   for (int i = 0 ; i < nElectron ; i++) {
+        		   e_tempPt[i] = electronPt[i];
+        		   e_tempEta[i] = electronEta[i];
+        		   e_tempPhi[i] = electronPhi[i];
+        		   e_tempQ[i] = electronQ[i];
+        		   e_tempTag[i] = electronTag[i];
+        		   e_tempCal02[i] = electronCal02[i];
+        		   e_tempCal03[i] = electronCal03[i];
+        		   e_tempCal04[i] = electronCal04[i];
+        		   e_tempTrk02[i] = electronTrk02[i];
+        		   e_tempTrk03[i] = electronTrk03[i];
+        		   e_tempTrk04[i] = electronTrk04[i];
+
+        	   }
+        	   for (int i = 0 ; i < nElectron ; i++){
+        		   electronPt[i] = e_tempPt[eleIndex[i]];
+        		   electronEta[i] = e_tempEta[eleIndex[i]];
+        		   electronPhi[i] = e_tempPhi[eleIndex[i]];
+        		   electronQ[i] = e_tempQ[eleIndex[i]];
+        		   electronTag[i] = e_tempTag[eleIndex[i]];
+        		   electronCal02[i] = e_tempCal02[eleIndex[i]];
+        		   electronCal03[i] = e_tempCal03[eleIndex[i]];
+        		   electronCal04[i] = e_tempCal04[eleIndex[i]];
+        		   electronTrk02[i] = e_tempTrk02[eleIndex[i]];
+        		   electronTrk03[i] = e_tempTrk03[eleIndex[i]];
+        		   electronTrk04[i] = e_tempTrk04[eleIndex[i]];
+        	   }
+
+        	   //sort muons
+        	   vector<int> muIndex;
+        	   vector<float> mu_Pt;
+        	   for (int i = 0 ; i < nMuon ; i++) {
+        		   muIndex.push_back(i);
+        		   mu_Pt.push_back(muonPt[i]);
+        	   }
+        	   tool.Setv_pt(mu_Pt);
+        	   sort(muIndex.begin(), muIndex.end(),tool);
+
+        	   float m_tempPt[nMuon];
+        	   float m_tempEta[nMuon];
+        	   float m_tempPhi[nMuon];
+        	   float m_tempQ[nMuon];
+        	   float m_tempTag[nMuon];
+        	   float m_tempCal02[nMuon];
+        	   float m_tempCal03[nMuon];
+        	   float m_tempCal04[nMuon];
+        	   float m_tempTrk02[nMuon];
+        	   float m_tempTrk03[nMuon];
+        	   float m_tempTrk04[nMuon];
+
+
+        	   for (int i = 0 ; i < nMuon ; i++) {
+        		   m_tempPt[i] = muonPt[i];
+        		   m_tempEta[i] = muonEta[i];
+        		   m_tempPhi[i] = muonPhi[i];
+        		   m_tempQ[i] = muonQ[i];
+        		   m_tempTag[i] = muonTag[i];
+        		   m_tempCal02[i] = muonCal02[i];
+        		   m_tempCal03[i] = muonCal03[i];
+        		   m_tempCal04[i] = muonCal04[i];
+        		   m_tempTrk02[i] = muonTrk02[i];
+        		   m_tempTrk03[i] = muonTrk03[i];
+        		   m_tempTrk04[i] = muonTrk04[i];
+
+        	   }
+        	   for (int i = 0 ; i < nMuon ; i++){
+        		   muonPt[i] = m_tempPt[muIndex[i]];
+        		   muonEta[i] = m_tempEta[muIndex[i]];
+        		   muonPhi[i] = m_tempPhi[muIndex[i]];
+        		   muonQ[i] = m_tempQ[muIndex[i]];
+        		   muonTag[i] = m_tempTag[muIndex[i]];
+        		   muonCal02[i] = m_tempCal02[muIndex[i]];
+        		   muonCal03[i] = m_tempCal03[muIndex[i]];
+        		   muonCal04[i] = m_tempCal04[muIndex[i]];
+        		   muonTrk02[i] = m_tempTrk02[muIndex[i]];
+        		   muonTrk03[i] = m_tempTrk03[muIndex[i]];
+        		   muonTrk04[i] = m_tempTrk04[muIndex[i]];
+        	   }
+
+        	   //sort taus
+        	   vector<int> tauIndex;
+        	   vector<float> tau_Pt;
+        	   for (int i = 0 ; i < nTau ; i++) {
+        		   tauIndex.push_back(i);
+        		   tau_Pt.push_back(tauPt[i]);
+        	   }
+        	   tool.Setv_pt(tau_Pt);
+        	   sort(tauIndex.begin(), tauIndex.end(),tool);
+
+        	   float t_tempPt[nTau];
+        	   float t_tempEta[nTau];
+        	   float t_tempPhi[nTau];
+        	   float t_tempQ[nTau];
+        	   float t_tempTag[nTau];
+        	   float t_tempCal02[nTau];
+        	   float t_tempCal03[nTau];
+        	   float t_tempCal04[nTau];
+        	   float t_tempTrk02[nTau];
+        	   float t_tempTrk03[nTau];
+        	   float t_tempTrk04[nTau];
+
+
+        	   for (int i = 0 ; i < nTau ; i++) {
+        		   t_tempPt[i] = tauPt[i];
+        		   t_tempEta[i] = tauEta[i];
+        		   t_tempPhi[i] = tauPhi[i];
+        		   t_tempQ[i] = tauQ[i];
+        		   t_tempTag[i] = tauTag[i];
+        		   t_tempCal02[i] = tauCal02[i];
+        		   t_tempCal03[i] = tauCal03[i];
+        		   t_tempCal04[i] = tauCal04[i];
+        		   t_tempTrk02[i] = tauTrk02[i];
+        		   t_tempTrk03[i] = tauTrk03[i];
+        		   t_tempTrk04[i] = tauTrk04[i];
+
+        	   }
+        	   for (int i = 0 ; i < nTau ; i++){
+        		   tauPt[i] = t_tempPt[tauIndex[i]];
+        		   tauEta[i] = t_tempEta[tauIndex[i]];
+        		   tauPhi[i] = t_tempPhi[tauIndex[i]];
+        		   tauQ[i] = t_tempQ[tauIndex[i]];
+        		   tauTag[i] = t_tempTag[tauIndex[i]];
+        		   tauCal02[i] = t_tempCal02[tauIndex[i]];
+        		   tauCal03[i] = t_tempCal03[tauIndex[i]];
+        		   tauCal04[i] = t_tempCal04[tauIndex[i]];
+        		   tauTrk02[i] = t_tempTrk02[tauIndex[i]];
+        		   tauTrk03[i] = t_tempTrk03[tauIndex[i]];
+        		   tauTrk04[i] = t_tempTrk04[tauIndex[i]];
+        	   }
+
+        	   //sort jets
+        	   vector<int> jetIndex;
+        	   vector<float> jet_Pt;
+        	   for (int i = 0 ; i < nJet ; i++) {
+        		   jetIndex.push_back(i);
+        		   jet_Pt.push_back(jetPt[i]);
+        	   }
+        	   tool.Setv_pt(jet_Pt);
+        	   sort(jetIndex.begin(), jetIndex.end(),tool);
+
+        	   float j_tempPt[nJet];
+        	   float j_tempEta[nJet];
+        	   float j_tempPhi[nJet];
+        	   float j_tempQ[nJet];
+        	   float j_tempTag[nJet];
+        	   float j_tempCal02[nJet];
+        	   float j_tempCal03[nJet];
+        	   float j_tempCal04[nJet];
+        	   float j_tempTrk02[nJet];
+        	   float j_tempTrk03[nJet];
+        	   float j_tempTrk04[nJet];
+
+
+        	   for (int i = 0 ; i < nJet ; i++) {
+        		   j_tempPt[i] = jetPt[i];
+        		   j_tempEta[i] = jetEta[i];
+        		   j_tempPhi[i] = jetPhi[i];
+        		   j_tempQ[i] = jetQ[i];
+        		   j_tempTag[i] = jetTag[i];
+        		   j_tempCal02[i] = jetCal02[i];
+        		   j_tempCal03[i] = jetCal03[i];
+        		   j_tempCal04[i] = jetCal04[i];
+        		   j_tempTrk02[i] = jetTrk02[i];
+        		   j_tempTrk03[i] = jetTrk03[i];
+        		   j_tempTrk04[i] = jetTrk04[i];
+
+        	   }
+        	   for (int i = 0 ; i < nJet ; i++){
+        		   jetPt[i] = j_tempPt[jetIndex[i]];
+        		   jetEta[i] = j_tempEta[jetIndex[i]];
+        		   jetPhi[i] = j_tempPhi[jetIndex[i]];
+        		   jetQ[i] = j_tempQ[jetIndex[i]];
+        		   jetTag[i] = j_tempTag[jetIndex[i]];
+        		   jetCal02[i] = j_tempCal02[jetIndex[i]];
+        		   jetCal03[i] = j_tempCal03[jetIndex[i]];
+        		   jetCal04[i] = j_tempCal04[jetIndex[i]];
+        		   jetTrk02[i] = j_tempTrk02[jetIndex[i]];
+        		   jetTrk03[i] = j_tempTrk03[jetIndex[i]];
+        		   jetTrk04[i] = j_tempTrk04[jetIndex[i]];
+        	   }
+
     		   //fill the tree
     		   t->Fill();
     	   }
+
+
+
+
 		   //initialize the variables
 		   nPhoton = 0;
 		   nElectron = 0;
@@ -243,7 +489,7 @@ void AsciiToNtuple()
 			   jetQ[i] = -999;
 			   jetTag[i] = -999;
 			   jetCal02[i] = -999.;
-			   jetCal03[i] = -999.;
+			   jetCal03[i] = -999.; 	
 			   jetCal04[i] = -999.;
 			   jetTrk02[i] = -999.;
 			   jetTrk03[i] = -999.;
@@ -253,6 +499,7 @@ void AsciiToNtuple()
        }
 
        //new particle/object
+
        if(number != -999 && trk04 != -999)
        {
     	   if(type == 0) //photon
@@ -323,12 +570,17 @@ void AsciiToNtuple()
     		   metEta = eta;
     		   metPhi = phi;
     	   }
-       }
+
+
+
+       }//end new particle/object
+//       if(evt>100) break;
    }
+
 
    t->Print();
    f.cd();
-   t->Write();
+   t->Write("",TObject::kOverwrite);
    infile.close();
 
    return;
