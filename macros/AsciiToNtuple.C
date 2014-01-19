@@ -8,10 +8,10 @@
 #include <cstdio>
 #include <algorithm>
 #include <vector>
+#include <math.h>
 
 using namespace std;
 
-#include "LFVPrivate/Functions_Data.h"
 #include "LFVPrivate/Tools.h"
 
 
@@ -58,6 +58,7 @@ void AsciiToNtuple()
    float electronTrk02[kMaxTrack];
    float electronTrk03[kMaxTrack];
    float electronTrk04[kMaxTrack];
+   float electronSign[kMaxTrack];
 
    int nMuon = 0;
    float muonPt[kMaxTrack];
@@ -71,6 +72,7 @@ void AsciiToNtuple()
    float muonTrk02[kMaxTrack];
    float muonTrk03[kMaxTrack];
    float muonTrk04[kMaxTrack];
+   float muonSign[kMaxTrack];
 
    int nTau = 0;
    float tauPt[kMaxTrack];
@@ -84,6 +86,7 @@ void AsciiToNtuple()
    float tauTrk02[kMaxTrack];
    float tauTrk03[kMaxTrack];
    float tauTrk04[kMaxTrack];
+   float tauSign[kMaxTrack];
 
    int nJet = 0;
    float jetPt[kMaxTrack];
@@ -103,7 +106,7 @@ void AsciiToNtuple()
    float metPhi = -999.;
 
 
-   TFile f("Z_noSmearing.root","recreate");
+   TFile f("WW_noRad.root","recreate");
    TTree *t = new TTree("t","Reconst ntuple");
    t->Branch("evt",&evt,"evt/I");
    t->Branch("nPhoton",&nPhoton,"nPhoton/I");
@@ -122,6 +125,7 @@ void AsciiToNtuple()
    t->Branch("electronTrk02",electronTrk02,"electronTrk02[nElectron]/F");
    t->Branch("electronTrk03",electronTrk03,"electronTrk03[nElectron]/F");
    t->Branch("electronTrk04",electronTrk04,"electronTrk04[nElectron]/F");
+   t->Branch("electronSign",electronSign,"electronSign[nElectron]/F");
    t->Branch("nMuon",&nMuon,"nMuon/I");
    t->Branch("muonPt",muonPt,"muonPt[nMuon]/F");
    t->Branch("muonEta",muonEta,"muonEta[nMuon]/F");
@@ -134,6 +138,7 @@ void AsciiToNtuple()
    t->Branch("muonTrk02",muonTrk02,"muonTrk02[nMuon]/F");
    t->Branch("muonTrk03",muonTrk03,"muonTrk03[nMuon]/F");
    t->Branch("muonTrk04",muonTrk04,"muonTrk04[nMuon]/F");
+   t->Branch("muonSign",muonSign,"muonSign[nMuon]/F");
    t->Branch("nTau",&nTau,"nTau/I");
    t->Branch("tauPt",tauPt,"tauPt[nTau]/F");
    t->Branch("tauEta",tauEta,"tauEta[nTau]/F");
@@ -146,6 +151,7 @@ void AsciiToNtuple()
    t->Branch("tauTrk02",tauTrk02,"tauTrk02[nTau]/F");
    t->Branch("tauTrk03",tauTrk03,"tauTrk03[nTau]/F");
    t->Branch("tauTrk04",tauTrk04,"tauTrk04[nTau]/F");
+   t->Branch("tauSign",tauSign,"tauSign[nTau]/F");
    t->Branch("nJet",&nJet,"nJet/I");
    t->Branch("jetPt",jetPt,"jetPt[nJet]/F");
    t->Branch("jetEta",jetEta,"jetEta[nJet]/F");
@@ -158,12 +164,12 @@ void AsciiToNtuple()
    t->Branch("jetTrk02",jetTrk02,"jetTrk02[nJet]/F");
    t->Branch("jetTrk03",jetTrk03,"jetTrk03[nJet]/F");
    t->Branch("jetTrk04",jetTrk04,"jetTrk04[nJet]/F");
-   t->Branch("metPt",&metPt,"metPt/I");
-   t->Branch("metEta",&metEta,"metEta/I");
-   t->Branch("metPhi",&metPhi,"metPhi/I");
+   t->Branch("metPt",&metPt,"metPt/F");
+   t->Branch("metEta",&metEta,"metEta/F");
+   t->Branch("metPhi",&metPhi,"metPhi/F");
 
    string line;
-   ifstream infile ("../exampleOutput/Z.cmnd.ns.8.lhco");
+   ifstream infile ("../exampleOutput/WW_noRad.cmnd.8.lhco");
 
    while (!infile.eof())
    {
@@ -242,6 +248,7 @@ void AsciiToNtuple()
     	   	   float e_tempTrk02[nElectron];
     	   	   float e_tempTrk03[nElectron];
     	   	   float e_tempTrk04[nElectron];
+    	   	   float e_tempSign[nElectron];
 
 
         	   for (int i = 0 ; i < nElectron ; i++) {
@@ -256,6 +263,7 @@ void AsciiToNtuple()
         		   e_tempTrk02[i] = electronTrk02[i];
         		   e_tempTrk03[i] = electronTrk03[i];
         		   e_tempTrk04[i] = electronTrk04[i];
+        		   e_tempSign[i] = electronSign[i];
 
         	   }
         	   for (int i = 0 ; i < nElectron ; i++){
@@ -270,6 +278,7 @@ void AsciiToNtuple()
         		   electronTrk02[i] = e_tempTrk02[eleIndex[i]];
         		   electronTrk03[i] = e_tempTrk03[eleIndex[i]];
         		   electronTrk04[i] = e_tempTrk04[eleIndex[i]];
+        		   electronSign[i] = e_tempSign[eleIndex[i]];
         	   }
 
         	   //sort muons
@@ -293,6 +302,7 @@ void AsciiToNtuple()
         	   float m_tempTrk02[nMuon];
         	   float m_tempTrk03[nMuon];
         	   float m_tempTrk04[nMuon];
+        	   float m_tempSign[nMuon];
 
 
         	   for (int i = 0 ; i < nMuon ; i++) {
@@ -307,6 +317,7 @@ void AsciiToNtuple()
         		   m_tempTrk02[i] = muonTrk02[i];
         		   m_tempTrk03[i] = muonTrk03[i];
         		   m_tempTrk04[i] = muonTrk04[i];
+        		   m_tempSign[i] = muonSign[i];
 
         	   }
         	   for (int i = 0 ; i < nMuon ; i++){
@@ -321,6 +332,7 @@ void AsciiToNtuple()
         		   muonTrk02[i] = m_tempTrk02[muIndex[i]];
         		   muonTrk03[i] = m_tempTrk03[muIndex[i]];
         		   muonTrk04[i] = m_tempTrk04[muIndex[i]];
+        		   muonSign[i] = m_tempSign[muIndex[i]];
         	   }
 
         	   //sort taus
@@ -344,6 +356,7 @@ void AsciiToNtuple()
         	   float t_tempTrk02[nTau];
         	   float t_tempTrk03[nTau];
         	   float t_tempTrk04[nTau];
+        	   float t_tempSign[nTau];
 
 
         	   for (int i = 0 ; i < nTau ; i++) {
@@ -358,6 +371,7 @@ void AsciiToNtuple()
         		   t_tempTrk02[i] = tauTrk02[i];
         		   t_tempTrk03[i] = tauTrk03[i];
         		   t_tempTrk04[i] = tauTrk04[i];
+        		   t_tempSign[i] = tauSign[i];
 
         	   }
         	   for (int i = 0 ; i < nTau ; i++){
@@ -372,6 +386,7 @@ void AsciiToNtuple()
         		   tauTrk02[i] = t_tempTrk02[tauIndex[i]];
         		   tauTrk03[i] = t_tempTrk03[tauIndex[i]];
         		   tauTrk04[i] = t_tempTrk04[tauIndex[i]];
+        		   tauSign[i] = t_tempSign[tauIndex[i]];
         	   }
 
         	   //sort jets
@@ -458,6 +473,7 @@ void AsciiToNtuple()
 			   electronTrk02[i] = -999.;
 			   electronTrk03[i] = -999.;
 			   electronTrk04[i] = -999.;
+			   electronSign[i] = -999;
 
 			   muonPt[i] = -999.;
 			   muonEta[i] = -999.;
@@ -470,6 +486,7 @@ void AsciiToNtuple()
 			   muonTrk02[i] = -999.;
 			   muonTrk03[i] = -999.;
 			   muonTrk04[i] = -999.;
+			   muonSign[i] = -999;
 
 			   tauPt[i] = -999.;
 			   tauEta[i] = -999.;
@@ -482,6 +499,7 @@ void AsciiToNtuple()
 			   tauTrk02[i] = -999.;
 			   tauTrk03[i] = -999.;
 			   tauTrk04[i] = -999.;
+			   tauSign[i] = -999;
 
 			   jetPt[i] = -999.;
 			   jetEta[i] = -999.;
@@ -522,6 +540,7 @@ void AsciiToNtuple()
     		   electronCal02[nElectron-1] = cal02;
     		   electronCal03[nElectron-1] = cal03;
     		   electronCal04[nElectron-1] = cal04;
+    		   electronSign[nElectron-1] = copysign(1,type);
     	   }else if(type == -2 || type == 2)
     	   {
     		   nMuon++;
@@ -536,6 +555,7 @@ void AsciiToNtuple()
     		   muonCal02[nMuon-1] = cal02;
     		   muonCal03[nMuon-1] = cal03;
     		   muonCal04[nMuon-1] = cal04;
+    		   muonSign[nMuon-1] = copysign(1,type);
     	   }else if(type == -3 || type == 3)
     	   {
     		   nTau++;
@@ -550,6 +570,7 @@ void AsciiToNtuple()
     		   tauCal02[nTau-1] = cal02;
     		   tauCal03[nTau-1] = cal03;
     		   tauCal04[nTau-1] = cal04;
+    		   tauSign[nTau-1] = copysign(1,type);
     	   }else if(type == -4 || type == 4)
     	   {
     		   nJet++;
