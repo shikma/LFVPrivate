@@ -35,6 +35,8 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
     Int_t nTen = nentries/10;
     Int_t nbytes = 0, nb = 0;
 
+    //Histo definitions
+
     TH1D* h_elPt = new TH1D("elPt","elPt",150,0,300);
     TH1D* h_muPt = new TH1D("muPt","muPt",150,0,300);
     TH1D* h_elPt_2 = new TH1D("elPt2","elPt2",150,0,300);
@@ -61,12 +63,15 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
     //output
     TFile* file = new TFile(outfile,"RECREATE");
 
+
     //cut flow counters
     int n_readIn = 0;
     int n_pass2DifferentFlavor = 0;
     int n_passOppositeSign = 0;
     int n_passL0Pt = 0;
     int n_passL1Pt = 0;
+    int n_passdPhiL0L1 = 0;
+    int n_passdPhiL1Met = 0;
 
 
 
@@ -104,6 +109,7 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 	  		float MetPt = data->metPt;
 	  		TLorentzVector vMet;
 	  		vMet.SetPxPyPzE(MetPt*cos(MetPhi),MetPt*sin(MetPhi),0,MetPt);
+	  		double dPhiElMu = abs(vEle.DeltaPhi(vMu));
 
 	  		if (useCuts){
 	  			//Opposite Sign
@@ -117,6 +123,13 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 	  			if ((ElPt >= MuPt)&&(MuPt < L1_PT_CUT)){continue; }
 	  			if ((ElPt < MuPt)&&(ElPt < L1_PT_CUT)){continue; }
 	  			n_passL1Pt++;
+	  			//DeltaPhi(l0,l1)
+	  			if (dPhiElMu<dPhi_l0l1_CUT){continue; }
+	  			n_passdPhiL0L1++;
+	  			//DeltaPhi(l1,Met)
+	  			if ((ElPt >= MuPt)&&(abs(vMu.DeltaPhi(vMet))>dPhi_l1Met_CUT)){continue; }
+	  			if ((ElPt < MuPt)&&(abs(vEle.DeltaPhi(vMet))>dPhi_l1Met_CUT)){continue; }
+	  			n_passdPhiL1Met++;
 	  		}
 
 
@@ -127,23 +140,20 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 	  		if (ElPt >= MuPt){
 	  			h_EM_l0_Pt->Fill(ElPt);
 	  			h_EM_l1_Pt->Fill(MuPt);
-	  			double dPhiElMu = vEle.DeltaPhi(vMu);
-	  			h_EM_dPhi_l0_l1->Fill(abs(dPhiElMu));
+	  			h_EM_dPhi_l0_l1->Fill(dPhiElMu);
 	  			h_EM_dPhi_l1_MET->Fill(abs(vMu.DeltaPhi(vMet)));
 	  			double dEtaElMu = abs(data->electronEta[0]-data->muonEta[0]);
-	  			h_EM_dEta_l0_l1->Fill(abs(dEtaElMu));
+	  			h_EM_dEta_l0_l1->Fill(dEtaElMu);
 	  			double Mcoll = sqrt(2.0*ElPt*(MuPt+MetPt)*(cosh(dEtaElMu) - cos(dPhiElMu)));
-//	  			cout<<"MEt  ="<<MetPt<<"cosh = "<<cosh(dEtaElMu)<<",cos = "<<cos(dPhiElMu)<<",Mcoll = "<<Mcoll<<endl;
 	  			h_EM_Mcoll->Fill(Mcoll);
 	  		}
 	  		else{
 	  			h_ME_l1_Pt->Fill(ElPt);
 	  			h_ME_l0_Pt->Fill(MuPt);
-	  			double dPhiElMu = vEle.DeltaPhi(vMu);
-	  			h_ME_dPhi_l0_l1->Fill(abs(dPhiElMu));
+	  			h_ME_dPhi_l0_l1->Fill(dPhiElMu);
 	  			h_ME_dPhi_l1_MET->Fill(abs(vEle.DeltaPhi(vMet)));
-	  			double dEtaElMu = data->electronEta[0]-data->muonEta[0];
-	  			h_ME_dEta_l0_l1->Fill(abs(dEtaElMu));
+	  			double dEtaElMu = abs(data->electronEta[0]-data->muonEta[0]);
+	  			h_ME_dEta_l0_l1->Fill(dEtaElMu);
 	  			double Mcoll = sqrt(2.0*MuPt*(ElPt+MetPt)*(cosh(dEtaElMu) - cos(dPhiElMu)));
 	  			h_ME_Mcoll->Fill(Mcoll);
 	  		}
@@ -187,19 +197,19 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 	}
 
     if (useEM){
-    	TCanvas *c1 = new TCanvas("leading Lepton Pt","leading Lepton Pt",600,400);	c1->cd();
+    	TCanvas *c1 = new TCanvas(infile+" leading Lepton Pt",infile+" leading Lepton Pt",600,400);	c1->cd();
     	h_EM_l0_Pt->SetLineColor(kGreen+2); h_EM_l0_Pt->SetLineWidth(2); h_EM_l0_Pt->Draw("E1");
     	h_ME_l0_Pt->SetLineWidth(2); h_ME_l0_Pt->Draw("sames E1");
-       	TCanvas *c2 = new TCanvas("subleading Lepton Pt","subleading Lepton Pt",600,400); c2->cd();
+       	TCanvas *c2 = new TCanvas(infile+" subleading Lepton Pt",infile+" subleading Lepton Pt",600,400); c2->cd();
        	h_EM_l1_Pt->SetLineColor(kGreen+2); h_EM_l1_Pt->SetLineWidth(2); h_EM_l1_Pt->Draw("E1");
        	h_ME_l1_Pt->SetLineWidth(2); h_ME_l1_Pt->Draw("sames E1");
-    	TCanvas *c3 = new TCanvas("Electron Muon Pt","Electron Muon Pt",600,400); c3->cd();
+    	TCanvas *c3 = new TCanvas(infile+" Electron Muon Pt",infile+" Electron Muon Pt",600,400); c3->cd();
     	h_elPt_2->SetLineColor(kGreen+2); h_elPt_2->SetLineWidth(2); h_elPt_2->Draw("E1");
     	h_muPt_2->SetLineWidth(2); h_muPt_2->Draw("sames E1");
-    	TCanvas *c4 = new TCanvas("DeltaPhi(el,mu)","DeltaPhi(el,mu)",600,400); c4->cd();
+    	TCanvas *c4 = new TCanvas(infile+" DeltaPhi(el,mu)",infile+" DeltaPhi(el,mu)",600,400); c4->cd();
     	h_EM_dPhi_l0_l1->SetLineColor(kGreen+2); h_EM_dPhi_l0_l1->SetLineWidth(2); h_EM_dPhi_l0_l1->Draw("E1");
     	h_ME_dPhi_l0_l1->SetLineWidth(2); h_ME_dPhi_l0_l1->Draw("sames E1");
-    	TCanvas *c5 = new TCanvas("DeltaPhi(l1,met)","DeltaPhi(l1,met)",600,400); c5->cd();
+    	TCanvas *c5 = new TCanvas(infile+" DeltaPhi(l1,met)",infile+" DeltaPhi(l1,met)",600,400); c5->cd();
     	h_EM_dPhi_l1_MET->SetLineColor(kGreen+2); h_EM_dPhi_l1_MET->SetLineWidth(2); h_EM_dPhi_l1_MET->Draw("E1");
     	h_ME_dPhi_l1_MET->SetLineWidth(2); h_ME_dPhi_l1_MET->Draw("sames E1");
     	TCanvas *c6 = new TCanvas("c6","c6",600,400); c6->cd();
@@ -209,18 +219,14 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
     	h_elPtMinusMuPt->Add(h_muPt_2,-1);
     	h_delta->Divide(h_elPtMinusMuPt,h_ptSum,1,2);
     	h_delta->Draw("E1");
-    	TCanvas *c7 = new TCanvas("DeltaEta(l0,l1)","DeltaEta(l0,l1)",600,400); c7->cd();
+    	TCanvas *c7 = new TCanvas(infile+" DeltaEta(l0,l1)",infile+" DeltaEta(l0,l1)",600,400); c7->cd();
     	h_ME_dEta_l0_l1->SetLineWidth(2); h_ME_dEta_l0_l1->Draw("E1");
     	h_EM_dEta_l0_l1->SetLineColor(kGreen+2); h_EM_dEta_l0_l1->SetLineWidth(2); h_EM_dEta_l0_l1->Draw("sames E1");
-    	TCanvas *c8 = new TCanvas("Mcoll","Mcoll",600,400); c8->cd();
+    	TCanvas *c8 = new TCanvas(infile+" Mcoll",infile+" Mcoll",600,400); c8->cd();
     	h_EM_Mcoll->SetLineWidth(2); h_EM_Mcoll->SetLineColor(kGreen+2); h_EM_Mcoll->Draw("E1");
     	h_ME_Mcoll->SetLineWidth(2); h_ME_Mcoll->Draw("sames E1");
 
 
-
-//    	h_mueta->Draw("E1");
-//    	h_eleta->SetLineColor(kGreen+2);h_eleta->Draw("sames E1");
-//    	h_elPtMinusMuPt->Draw();
 
     	h_EM_l0_Pt->Write();
     	h_ME_l0_Pt->Write();
@@ -239,17 +245,7 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 
     }
 
-//    h_elPt->Write();
-//    h_muPt->Write();
 
-//    h_elPt->SetLineColor(kGreen+2);
-//    h_elPt->Draw();
-//    h_muPt->Draw("sames");
-
-//    h_eleta->SetLineColor(kGreen+2);
-
-//    h_eleta->DrawNormalized();
-//    h_mueta->DrawNormalized("sames");
 
     if (useCuts){
     	cout<<endl;
@@ -258,6 +254,9 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 		cout<<"# passed Opposite Sign: "<<n_passOppositeSign<<endl;
 		cout<<"# passed l0 Pt cut: "<<n_passL0Pt<<endl;
 		cout<<"# passed l1 Pt cut: "<<n_passL1Pt<<endl;
+		cout<<"# passed deltaPhi(l0,l1) cut: "<<n_passdPhiL0L1<<endl;
+		cout<<"# passed deltaPhi(l1,Met) cut: "<<n_passdPhiL1Met<<endl;
+
     }
 
     file->Close();

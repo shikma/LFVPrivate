@@ -1,6 +1,7 @@
 
 #include "TFile.h"
 #include "TTree.h"
+#include "TString.h"
 
 #include <iostream>
 #include <fstream>
@@ -15,7 +16,7 @@ using namespace std;
 #include "LFVPrivate/Tools.h"
 
 
-void AsciiToNtuple()
+void AsciiToNtuple(TString inputfile,TString outputfile)
 {
 	/*
 	 *   # typ  eta  phi    pT tag  cal02  cal03  cal04  trk02  trk03  trk04
@@ -106,7 +107,7 @@ void AsciiToNtuple()
    float metPhi = -999.;
 
 
-   TFile f("WW_noRad.root","recreate");
+   TFile f(outputfile,"recreate");
    TTree *t = new TTree("t","Reconst ntuple");
    t->Branch("evt",&evt,"evt/I");
    t->Branch("nPhoton",&nPhoton,"nPhoton/I");
@@ -169,7 +170,7 @@ void AsciiToNtuple()
    t->Branch("metPhi",&metPhi,"metPhi/F");
 
    string line;
-   ifstream infile ("../exampleOutput/WW_noRad.cmnd.8.lhco");
+   ifstream infile ("../exampleOutput/"+inputfile);
 
    while (!infile.eof())
    {
