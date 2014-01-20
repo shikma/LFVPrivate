@@ -49,8 +49,8 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
     TH1D* h_EM_dPhi_l0_l1 = new TH1D("EM_dPhi_l0_l1","EM_dPhi_l0_l1",50,0,5);
     TH1D* h_ME_dPhi_l1_MET = new TH1D("ME_dPhi_l1_MET","ME_dPhi_l1_MET",50,0,5);
     TH1D* h_EM_dPhi_l1_MET = new TH1D("EM_dPhi_l1_MET","EM_dPhi_l1_MET",50,0,5);
-    TH1D* h_EM_dEta_l0_l1 = new TH1D("EM delta Eta","EM delta Eta",50,0,5);
-    TH1D* h_ME_dEta_l0_l1 = new TH1D("ME delta Eta","ME delta Eta",50,0,5);
+    TH1D* h_EM_dEta_l0_l1 = new TH1D("EM_delta_Eta","EM_delta_Eta",50,0,5);
+    TH1D* h_ME_dEta_l0_l1 = new TH1D("ME_delta_Eta","ME_delta_Eta",50,0,5);
     TH1D* h_EM_Mcoll = new TH1D("EM_Mcoll","EM_Mcoll",250,0,500);
     TH1D* h_ME_Mcoll = new TH1D("ME_Mcoll","ME_Mcoll",250,0,500);
     TH1D* h_eleta = new TH1D("elEta","elEta",60,-3,3);
@@ -197,6 +197,7 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 	}
 
     if (useEM){
+    	//Draw Histos
     	TCanvas *c1 = new TCanvas(infile+" leading Lepton Pt",infile+" leading Lepton Pt",600,400);	c1->cd();
     	h_EM_l0_Pt->SetLineColor(kGreen+2); h_EM_l0_Pt->SetLineWidth(2); h_EM_l0_Pt->Draw("E1");
     	h_ME_l0_Pt->SetLineWidth(2); h_ME_l0_Pt->Draw("sames E1");
@@ -227,7 +228,7 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
     	h_ME_Mcoll->SetLineWidth(2); h_ME_Mcoll->Draw("sames E1");
 
 
-
+    	//Save histos
     	h_EM_l0_Pt->Write();
     	h_ME_l0_Pt->Write();
     	h_EM_l1_Pt->Write();
