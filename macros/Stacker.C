@@ -27,7 +27,7 @@ void Stacker(TString path,TString cut,double Br)
 	TCanvas* c4 = new TCanvas("canvasStack"+cut,"canvasStack"+cut,600,600);
 	c4->SetLogy();
 
-	TLegend* leg = new TLegend(0.1,0.7,0.48,0.9);
+	TLegend* leg = new TLegend(0.5,0.7,0.7,0.9);
 	leg->SetFillColor(kWhite);
 	leg->SetBorderSize(1);
 
