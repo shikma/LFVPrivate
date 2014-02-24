@@ -22,7 +22,7 @@ public:
 	bool operator() (int a, int b){return m_v_pt[a]>m_v_pt[b];}
 	void Setv_pt(vector<float> v){m_v_pt=v;}
 private:
-	SimData* m_data;
+//	SimData* m_data;
 	vector<float> m_v_pt;
 };
 
