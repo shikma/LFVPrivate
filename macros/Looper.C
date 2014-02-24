@@ -6,7 +6,9 @@
 #include "TString.h"
 #include "TLorentzVector.h"
 #include "TH1.h"
+#include "TH2.h"
 #include <iostream>
+#include <fstream>
 #include <math.h>
 
 using namespace std;
@@ -14,8 +16,8 @@ using namespace std;
 void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 {
 	//CUT VALUES
-	float L0_PT_CUT = 30;
-	float L1_PT_CUT = 10;
+	float L0_PT_CUT = 0;
+	float L1_PT_CUT = 0;
 	float dPhi_l0l1_CUT = 0;
 	float dPhi_l1Met_CUT = 5;
 
@@ -41,6 +43,8 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
     TH1D* h_muPt = new TH1D("muPt","muPt",150,0,300);
     TH1D* h_elPt_2 = new TH1D("elPt2","elPt2",150,0,300);
     TH1D* h_muPt_2 = new TH1D("muPt2","muPt2",150,0,300);
+    TH1D* h_deltaPt = new TH1D("ElPt - MuPt","ElPt - MuPt",200,-100,100);
+    TH2D* h_deltaPt_vs_ElPt = new TH2D("deltaPt vs. ElPt","deltaPt vs ElPt",75,0,150,200,-100,100);
     TH1D* h_ME_l0_Pt = new TH1D("ME_l0_Pt","ME_l0_Pt",150,0,300);
     TH1D* h_EM_l0_Pt = new TH1D("EM_l0_Pt","EM_l0_Pt",150,0,300);
     TH1D* h_ME_l1_Pt = new TH1D("ME_l1_Pt","ME_l1_Pt",150,0,300);
@@ -61,7 +65,7 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 
 
     //output
-    TFile* file = new TFile(outfile,"RECREATE");
+    TFile* file = new TFile(outfile+".root","RECREATE");
 
 
     //cut flow counters
@@ -96,6 +100,17 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 	  		if (n_e!=1 || n_m!=1){continue; 	}
 	  		n_pass2DifferentFlavor++;
 
+	  		//Isolation
+//	  		if ((data->electronCal04[0] > 4.0)||
+//	 					(data->electronCal04[0] > 0.1*data->electronPt[0])||
+//	 					(data->electronTrk04[0] > 0.1*data->electronPt[0]))
+//	  		{continue;}
+//	  		if ((data->muonCal04[0] > 4.0)||
+//	  				(data->muonCal04[0] > 0.1*data->muonPt[0])||
+//	  				(data->muonTrk04[0] > 0.1*data->muonPt[0]))
+//	  		{continue;}
+
+
 	  		//create TLorentzVectors
 	  		float ElPhi = data->electronPhi[0];
 	  		float ElPt = data->electronPt[0];
@@ -115,14 +130,15 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 	  			//Opposite Sign
 	  			if (data->electronSign[0]==data->muonSign[0]){continue; }
 	  			n_passOppositeSign++;
-	  			//L0 Pt
-	  			if ((ElPt >= MuPt)&&(ElPt < L0_PT_CUT)){continue; }
-	  			if ((ElPt < MuPt)&&(MuPt < L0_PT_CUT)){continue; }
-	  			n_passL0Pt++;
 	  			//L1 Pt
 	  			if ((ElPt >= MuPt)&&(MuPt < L1_PT_CUT)){continue; }
 	  			if ((ElPt < MuPt)&&(ElPt < L1_PT_CUT)){continue; }
 	  			n_passL1Pt++;
+	  			//L0 Pt
+	  			if ((ElPt >= MuPt)&&(ElPt < L0_PT_CUT)){continue; }
+	  			if ((ElPt < MuPt)&&(MuPt < L0_PT_CUT)){continue; }
+	  			n_passL0Pt++;
+
 	  			//DeltaPhi(l0,l1)
 	  			if (dPhiElMu<dPhi_l0l1_CUT){continue; }
 	  			n_passdPhiL0L1++;
@@ -136,27 +152,38 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 
 			h_elPt_2->Fill(ElPt);
 	  		h_muPt_2->Fill(MuPt);
+	  		h_deltaPt->Fill(ElPt-MuPt);
+	  		h_deltaPt_vs_ElPt->Fill(ElPt,ElPt-MuPt);
 
 	  		if (ElPt >= MuPt){
+	  			double dEtaElMu = abs(data->electronEta[0]-data->muonEta[0]);
+	  			double Mcoll = sqrt(2.0*ElPt*(MuPt+MetPt)*(cosh(dEtaElMu) - cos(dPhiElMu)));
+//	  			if (Mcoll>100 || Mcoll<20){continue;}
 	  			h_EM_l0_Pt->Fill(ElPt);
 	  			h_EM_l1_Pt->Fill(MuPt);
 	  			h_EM_dPhi_l0_l1->Fill(dPhiElMu);
 	  			h_EM_dPhi_l1_MET->Fill(abs(vMu.DeltaPhi(vMet)));
-	  			double dEtaElMu = abs(data->electronEta[0]-data->muonEta[0]);
+
 	  			h_EM_dEta_l0_l1->Fill(dEtaElMu);
-	  			double Mcoll = sqrt(2.0*ElPt*(MuPt+MetPt)*(cosh(dEtaElMu) - cos(dPhiElMu)));
+
 	  			h_EM_Mcoll->Fill(Mcoll);
+
 	  		}
 	  		else{
+	  			double dEtaElMu = abs(data->electronEta[0]-data->muonEta[0]);
+	  			double Mcoll = sqrt(2.0*MuPt*(ElPt+MetPt)*(cosh(dEtaElMu) - cos(dPhiElMu)));
+//	  			if (Mcoll>100 || Mcoll<20){continue;}
 	  			h_ME_l1_Pt->Fill(ElPt);
 	  			h_ME_l0_Pt->Fill(MuPt);
 	  			h_ME_dPhi_l0_l1->Fill(dPhiElMu);
 	  			h_ME_dPhi_l1_MET->Fill(abs(vEle.DeltaPhi(vMet)));
-	  			double dEtaElMu = abs(data->electronEta[0]-data->muonEta[0]);
+
 	  			h_ME_dEta_l0_l1->Fill(dEtaElMu);
-	  			double Mcoll = sqrt(2.0*MuPt*(ElPt+MetPt)*(cosh(dEtaElMu) - cos(dPhiElMu)));
+
 	  			h_ME_Mcoll->Fill(Mcoll);
+
 	  		}
+
 	  	}
 
 	 	if (n_e>0)
@@ -226,6 +253,10 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
     	TCanvas *c8 = new TCanvas(infile+" Mcoll",infile+" Mcoll",600,400); c8->cd();
     	h_EM_Mcoll->SetLineWidth(2); h_EM_Mcoll->SetLineColor(kGreen+2); h_EM_Mcoll->Draw("E1");
     	h_ME_Mcoll->SetLineWidth(2); h_ME_Mcoll->Draw("sames E1");
+    	TCanvas *c9 = new TCanvas(infile+" deltaPt",infile+" deltaPt",600,400); c9->cd();
+    	h_deltaPt->SetLineWidth(2); h_deltaPt->SetLineColor(kGreen+2); h_deltaPt->Draw("E1");
+    	TCanvas *c10 = new TCanvas(infile+" deltaPt vs. ElPt",infile+" deltaPt vs. ElPt",600,400); c10->cd();
+    	h_deltaPt_vs_ElPt->Draw("colz");
 
 
     	//Save histos
@@ -243,6 +274,8 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
     	h_ME_Mcoll->Write();
     	h_elPt_2->Write();
     	h_muPt_2->Write();
+    	h_deltaPt->Write();
+    	h_deltaPt_vs_ElPt->Write();
 
     }
 
@@ -253,14 +286,26 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 		cout<<"# read in: "<<n_readIn<<endl;
 		cout<<"# passed exactly 2 DF: "<<n_pass2DifferentFlavor<<endl;
 		cout<<"# passed Opposite Sign: "<<n_passOppositeSign<<endl;
-		cout<<"# passed l0 Pt cut: "<<n_passL0Pt<<endl;
 		cout<<"# passed l1 Pt cut: "<<n_passL1Pt<<endl;
+		cout<<"# passed l0 Pt cut: "<<n_passL0Pt<<endl;
 		cout<<"# passed deltaPhi(l0,l1) cut: "<<n_passdPhiL0L1<<endl;
 		cout<<"# passed deltaPhi(l1,Met) cut: "<<n_passdPhiL1Met<<endl;
 
     }
 
     file->Close();
+
+    ofstream output;
+    output.open(outfile+".txt",ios::app);
+    output<<"# read in: "<<n_readIn<<endl;
+    output<<"# passed exactly 2 DF: "<<n_pass2DifferentFlavor<<endl;
+    output<<"# passed Opposite Sign: "<<n_passOppositeSign<<endl;
+    output<<"# passed l1 Pt cut: "<<n_passL1Pt<<endl;
+    output<<"# passed l0 Pt cut: "<<n_passL0Pt<<endl;
+    output<<"# passed deltaPhi(l0,l1) cut: "<<n_passdPhiL0L1<<endl;
+    output<<"# passed deltaPhi(l1,Met) cut: "<<n_passdPhiL1Met<<endl;
+
+    output.close();
 
     delete data;
 }
