@@ -17,7 +17,7 @@ using namespace std;
 
 void Stacker(TString path,TString cut,double Br)
 {
-	TString MCSamples[10]={"wt", "ZZ","H2WWleptonic", "WlepZmue","WincZtautau",  "H2tt", "WWleptonic", "ttbar",  "Z2tt","H2tm"};
+	TString MCSamples[10]={"wt", "ZZ","H2WWleptonic", "WlepZmue","WincZtautau",  "H2tt", "WWleptonic", "ttbar",  "Z2tt_highmass","H2tm"};
 	Int_t   MCcolors[10]={ kMagenta+3, kMagenta,kBlue+1,kOrange+1,kOrange,  kGreen,  kYellow,  kRed, kCyan, kBlack};
 
 	TCanvas* c1 = new TCanvas("canvasLog"+cut,"canvasLog"+cut,600,600);
