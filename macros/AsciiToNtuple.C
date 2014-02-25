@@ -170,7 +170,7 @@ void AsciiToNtuple(TString inputfile,TString outputfile)
    t->Branch("metPhi",&metPhi,"metPhi/F");
 
    string line;
-   ifstream infile ("../output/"+inputfile);
+   ifstream infile (inputfile);
 
    while (!infile.eof())
    {
