@@ -296,7 +296,7 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
     file->Close();
 
     ofstream output;
-    output.open(outfile+".txt",ios::app);
+    output.open(outfile+".txt");
     output<<"# read in: "<<n_readIn<<endl;
     output<<"# passed exactly 2 DF: "<<n_pass2DifferentFlavor<<endl;
     output<<"# passed Opposite Sign: "<<n_passOppositeSign<<endl;
