@@ -136,11 +136,13 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 	  			if (data->electronSign[0]==data->muonSign[0]){continue; }
 	  			n_passOppositeSign++;
 	  			//L1 Pt
-	  			if ((ElPt >= MuPt)&&(MuPt < L1_PT_CUT)){continue; }
+	  			//if ((ElPt >= MuPt)&&(MuPt < L1_PT_CUT)){continue; }
+	  			if ((ElPt >= MuPt)&&(ElPt < L1_PT_CUT)){continue; }
 	  			if ((ElPt < MuPt)&&(ElPt < L1_PT_CUT)){continue; }
 	  			n_passL1Pt++;
 	  			//L0 Pt
-	  			if ((ElPt >= MuPt)&&(ElPt < L0_PT_CUT)){continue; }
+	  			//if ((ElPt >= MuPt)&&(ElPt < L0_PT_CUT)){continue; }
+	  			if ((ElPt >= MuPt)&&(MuPt < L0_PT_CUT)){continue; }
 	  			if ((ElPt < MuPt)&&(MuPt < L0_PT_CUT)){continue; }
 	  			n_passL0Pt++;
 
@@ -155,8 +157,10 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 	  			//DeltaPhi(l0,l1)
 	  			if (dPhiElMu<dPhi_l0l1_CUT){continue; }
 	  			n_passdPhiL0L1++;
+
 	  			//DeltaPhi(l1,Met)
-	  			if ((ElPt >= MuPt)&&(abs(vMu.DeltaPhi(vMet))>dPhi_l1Met_CUT)){continue; }
+	  			//if ((ElPt >= MuPt)&&(abs(vMu.DeltaPhi(vMet))>dPhi_l1Met_CUT)){continue; }
+	  			if ((ElPt >= MuPt)&&(abs(vEle.DeltaPhi(vMet))>dPhi_l1Met_CUT)){continue; }
 	  			if ((ElPt < MuPt)&&(abs(vEle.DeltaPhi(vMet))>dPhi_l1Met_CUT)){continue; }
 	  			n_passdPhiL1Met++;
 	  		}
