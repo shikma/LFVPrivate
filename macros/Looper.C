@@ -141,9 +141,9 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 	  			n_passL0Pt++;
 
 	  			//jet veto
-	  			bool jveto = kFalse;
+	  			bool jveto = 0;
 	  			for (int j=0; j<data->nJet && !jveto ; j++){
-	  				if ((data->jetPt[j] > 30)&&(abs(data->jetEta[j])<2.5)){jveto = kTrue; }
+	  				if ((data->jetPt[j] > 30)&&(abs(data->jetEta[j])<2.5)){jveto = 1; }
 	  			}
 	  			if (jveto){continue; }
 	  			n_passJetVeto++;
