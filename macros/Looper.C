@@ -17,9 +17,9 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 {
 	//CUT VALUES
 	float L0_PT_CUT = 30;
-	float L1_PT_CUT = 15;
-	float dPhi_l0l1_CUT = 2.7;
-	float dPhi_l1Met_CUT = 0.3;
+	float L1_PT_CUT = 10;
+	float dPhi_l0l1_CUT = 2.5;
+	float dPhi_l1Met_CUT = 0.5;
 
 
 	TChain* chain = new TChain("t","");
@@ -97,9 +97,9 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 	 	int n_e = data->nElectron;
 	 	int n_m = data->nMuon;
 
-	 	for (int i=0; i<n_m; i++){
-	 		if (abs(data->muonEta[i])>2.1){n_m--; }
-	 	}
+//	 	for (int i=0; i<n_m; i++){
+//	 		if (abs(data->muonEta[i])>2.1){n_m--; }
+//	 	}
 
 	  	if (useEM) {
 	  		if (n_e!=1 || n_m!=1){continue; 	}
@@ -136,13 +136,11 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 	  			if (data->electronSign[0]==data->muonSign[0]){continue; }
 	  			n_passOppositeSign++;
 	  			//L1 Pt
-	  			//if ((ElPt >= MuPt)&&(MuPt < L1_PT_CUT)){continue; }
-	  			if ((ElPt >= MuPt)&&(ElPt < L1_PT_CUT)){continue; }
+	  			if ((ElPt >= MuPt)&&(MuPt < L1_PT_CUT)){continue; }
 	  			if ((ElPt < MuPt)&&(ElPt < L1_PT_CUT)){continue; }
 	  			n_passL1Pt++;
 	  			//L0 Pt
-	  			//if ((ElPt >= MuPt)&&(ElPt < L0_PT_CUT)){continue; }
-	  			if ((ElPt >= MuPt)&&(MuPt < L0_PT_CUT)){continue; }
+	  			if ((ElPt >= MuPt)&&(ElPt < L0_PT_CUT)){continue; }
 	  			if ((ElPt < MuPt)&&(MuPt < L0_PT_CUT)){continue; }
 	  			n_passL0Pt++;
 
@@ -159,8 +157,7 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 	  			n_passdPhiL0L1++;
 
 	  			//DeltaPhi(l1,Met)
-	  			//if ((ElPt >= MuPt)&&(abs(vMu.DeltaPhi(vMet))>dPhi_l1Met_CUT)){continue; }
-	  			if ((ElPt >= MuPt)&&(abs(vEle.DeltaPhi(vMet))>dPhi_l1Met_CUT)){continue; }
+	  			if ((ElPt >= MuPt)&&(abs(vMu.DeltaPhi(vMet))>dPhi_l1Met_CUT)){continue; }
 	  			if ((ElPt < MuPt)&&(abs(vEle.DeltaPhi(vMet))>dPhi_l1Met_CUT)){continue; }
 	  			n_passdPhiL1Met++;
 	  		}
