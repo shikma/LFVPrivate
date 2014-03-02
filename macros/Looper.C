@@ -97,7 +97,7 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 	 	int n_e = data->nElectron;
 	 	int n_m = data->nMuon;
 
-	 	for (i=0; i<n_m; i++){
+	 	for (int i=0; i<n_m; i++){
 	 		if (abs(data->muonEta[i])>2.1){n_m--; }
 	 	}
 
