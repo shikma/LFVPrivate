@@ -16,10 +16,10 @@ using namespace std;
 void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 {
 	//CUT VALUES
-	float L0_PT_CUT = 10;
+	float L0_PT_CUT = 30;
 	float L1_PT_CUT = 10;
-	float dPhi_l0l1_CUT = 0;
-	float dPhi_l1Met_CUT = 5;
+	float dPhi_l0l1_CUT = 2.5;
+	float dPhi_l1Met_CUT = 0.5;
 
 
 	TChain* chain = new TChain("t","");
@@ -74,6 +74,7 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
     int n_passOppositeSign = 0;
     int n_passL0Pt = 0;
     int n_passL1Pt = 0;
+    int n_passJetVeto = 0;
     int n_passdPhiL0L1 = 0;
     int n_passdPhiL1Met = 0;
 
@@ -138,6 +139,14 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 	  			if ((ElPt >= MuPt)&&(ElPt < L0_PT_CUT)){continue; }
 	  			if ((ElPt < MuPt)&&(MuPt < L0_PT_CUT)){continue; }
 	  			n_passL0Pt++;
+
+	  			//jet veto
+	  			bool jveto = kFalse;
+	  			for (int j=0; j<data->nJet && !jveto ; j++){
+	  				if ((data->jetPt[j] > 30)&&(abs(data->jetEta[j])<2.5)){jveto = kTrue; }
+	  			}
+	  			if (jveto){continue; }
+	  			n_passJetVeto++;
 
 	  			//DeltaPhi(l0,l1)
 	  			if (dPhiElMu<dPhi_l0l1_CUT){continue; }
@@ -288,6 +297,7 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 		cout<<"# passed Opposite Sign: "<<n_passOppositeSign<<endl;
 		cout<<"# passed l1 Pt cut: "<<n_passL1Pt<<endl;
 		cout<<"# passed l0 Pt cut: "<<n_passL0Pt<<endl;
+		cout<<"# passed jet veto: "<<n_passJetVeto<<endl;
 		cout<<"# passed deltaPhi(l0,l1) cut: "<<n_passdPhiL0L1<<endl;
 		cout<<"# passed deltaPhi(l1,Met) cut: "<<n_passdPhiL1Met<<endl;
 
@@ -302,6 +312,7 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
     output<<"# passed Opposite Sign: "<<n_passOppositeSign<<endl;
     output<<"# passed l1 Pt cut: "<<n_passL1Pt<<endl;
     output<<"# passed l0 Pt cut: "<<n_passL0Pt<<endl;
+    output<<"# passed jet veto: "<<n_passJetVeto<<endl;
     output<<"# passed deltaPhi(l0,l1) cut: "<<n_passdPhiL0L1<<endl;
     output<<"# passed deltaPhi(l1,Met) cut: "<<n_passdPhiL1Met<<endl;
 
