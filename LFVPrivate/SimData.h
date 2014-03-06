@@ -82,6 +82,9 @@ public :
    Float_t         metEta;
    Float_t         metPhi;
 
+   Float_t         sf_el_reco_eff[10];
+   Float_t         sf_mu_reco_eff[10];
+
    // List of branches
    TBranch        *b_evt;   //!
    TBranch        *b_nPhoton;   //!
@@ -142,6 +145,8 @@ public :
    TBranch        *b_metPt;   //!
    TBranch        *b_metEta;   //!
    TBranch        *b_metPhi;   //!
+   TBranch        *b_sf_el_reco_eff; //!
+   TBranch        *b_sf_mu_reco_eff; //!
 
    SimData(TTree *tree=0);
    virtual ~SimData();
@@ -272,6 +277,10 @@ void SimData::Init(TTree *tree)
    fChain->SetBranchAddress("metPt", &metPt, &b_metPt);
    fChain->SetBranchAddress("metEta", &metEta, &b_metEta);
    fChain->SetBranchAddress("metPhi", &metPhi, &b_metPhi);
+   fChain->SetBranchAddress("metPhi", &metPhi, &b_metPhi);
+   fChain->SetBranchAddress("sf_el_reco_eff", sf_el_reco_eff, &b_sf_el_reco_eff);
+   fChain->SetBranchAddress("sf_mu_reco_eff", sf_mu_reco_eff, &b_sf_mu_reco_eff);
+   
    Notify();
 }
 

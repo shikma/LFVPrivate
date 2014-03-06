@@ -106,14 +106,20 @@ void AsciiToNtuple(TString inputfile,TString outputfile)
    float metEta = -999.;
    float metPhi = -999.;
 
+   float sf_mu_reco_eff[kMaxTrack];	// scale factor muon reco efficiency
+	float sf_el_reco_eff[kMaxTrack];	// electron reco efficiency
+
 
    TFile f(outputfile,"recreate");
    TTree *t = new TTree("t","Reconst ntuple");
+   
    t->Branch("evt",&evt,"evt/I");
+
    t->Branch("nPhoton",&nPhoton,"nPhoton/I");
    t->Branch("photonPt",photonPt,"photonPt[nPhoton]/F");
    t->Branch("photonEta",photonEta,"photonEta[nPhoton]/F");
    t->Branch("photonPhi",photonPhi,"photonPhi[nPhoton]/F");
+   
    t->Branch("nElectron",&nElectron,"nElectron/I");
    t->Branch("electronPt",electronPt,"electronPt[nElectron]/F");
    t->Branch("electronEta",electronEta,"electronEta[nElectron]/F");
@@ -127,6 +133,7 @@ void AsciiToNtuple(TString inputfile,TString outputfile)
    t->Branch("electronTrk03",electronTrk03,"electronTrk03[nElectron]/F");
    t->Branch("electronTrk04",electronTrk04,"electronTrk04[nElectron]/F");
    t->Branch("electronSign",electronSign,"electronSign[nElectron]/F");
+   
    t->Branch("nMuon",&nMuon,"nMuon/I");
    t->Branch("muonPt",muonPt,"muonPt[nMuon]/F");
    t->Branch("muonEta",muonEta,"muonEta[nMuon]/F");
@@ -140,6 +147,7 @@ void AsciiToNtuple(TString inputfile,TString outputfile)
    t->Branch("muonTrk03",muonTrk03,"muonTrk03[nMuon]/F");
    t->Branch("muonTrk04",muonTrk04,"muonTrk04[nMuon]/F");
    t->Branch("muonSign",muonSign,"muonSign[nMuon]/F");
+   
    t->Branch("nTau",&nTau,"nTau/I");
    t->Branch("tauPt",tauPt,"tauPt[nTau]/F");
    t->Branch("tauEta",tauEta,"tauEta[nTau]/F");
@@ -153,6 +161,7 @@ void AsciiToNtuple(TString inputfile,TString outputfile)
    t->Branch("tauTrk03",tauTrk03,"tauTrk03[nTau]/F");
    t->Branch("tauTrk04",tauTrk04,"tauTrk04[nTau]/F");
    t->Branch("tauSign",tauSign,"tauSign[nTau]/F");
+   
    t->Branch("nJet",&nJet,"nJet/I");
    t->Branch("jetPt",jetPt,"jetPt[nJet]/F");
    t->Branch("jetEta",jetEta,"jetEta[nJet]/F");
@@ -165,12 +174,18 @@ void AsciiToNtuple(TString inputfile,TString outputfile)
    t->Branch("jetTrk02",jetTrk02,"jetTrk02[nJet]/F");
    t->Branch("jetTrk03",jetTrk03,"jetTrk03[nJet]/F");
    t->Branch("jetTrk04",jetTrk04,"jetTrk04[nJet]/F");
+   
    t->Branch("metPt",&metPt,"metPt/F");
    t->Branch("metEta",&metEta,"metEta/F");
    t->Branch("metPhi",&metPhi,"metPhi/F");
 
+
+	t->Branch("sf_mu_reco_eff",sf_mu_reco_eff,"sf_mu_reco_eff[nMuon]/F");	// my branches
+	t->Branch("sf_el_reco_eff",sf_el_reco_eff,"sf_el_reco_eff[nElectron]/F");
+
+
    string line;
-   ifstream infile (inputfile);
+   ifstream infile ("../exampleOutput/"+inputfile);
 
    while (!infile.eof())
    {
@@ -542,6 +557,7 @@ void AsciiToNtuple(TString inputfile,TString outputfile)
     		   electronCal03[nElectron-1] = cal03;
     		   electronCal04[nElectron-1] = cal04;
     		   electronSign[nElectron-1] = copysign(1,type);
+    		   sf_el_reco_eff[nElectron-1] = 1; // Dan's addition
     	   }else if(type == -2 || type == 2)
     	   {
     		   nMuon++;
@@ -557,6 +573,7 @@ void AsciiToNtuple(TString inputfile,TString outputfile)
     		   muonCal03[nMuon-1] = cal03;
     		   muonCal04[nMuon-1] = cal04;
     		   muonSign[nMuon-1] = copysign(1,type);
+    		   sf_mu_reco_eff[nMuon-1] = 1; // Dan's addition
     	   }else if(type == -3 || type == 3)
     	   {
     		   nTau++;
