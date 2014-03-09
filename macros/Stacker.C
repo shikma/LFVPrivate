@@ -111,7 +111,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	strsEM << EM_Br;
 	std::string strBrEM = strsEM.str();
 
-	TFile *outputf = new TFile("MCStacked_"+cut+"BR_ME"+strBrME+"BR_EM"+strBrEM+".root","RECREATE");
+	TFile *outputf = new TFile("half_MCStacked_"+cut+"BR_ME"+strBrME+"BR_EM"+strBrEM+".root","RECREATE");
 
 	hsStackedME->Write();
 	hsStackedEM->Write();
