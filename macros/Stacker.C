@@ -20,7 +20,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	TString MCSamples[11]={"wt", "ZZ","H2WWleptonic", "WlepZmue","WincZtautau",
 			"H2tt", "ttbar", "WWleptonic",  "Z2tt_highmass","H2tm","H2te_tau2mu"};
 	Int_t   MCcolors[11]={ kMagenta+3, kMagenta,kBlue+1,kOrange+1,kOrange,
-			kGreen, kRed, kYellow, kCyan, kBlack, kBlack+1};
+			kGreen, kRed, kYellow, kCyan, kBlack, kBlack};
 
 	TCanvas* c1 = new TCanvas("canvasLog"+cut,"canvasLog"+cut,600,600);
 	c1->SetLogy();
