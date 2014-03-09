@@ -15,10 +15,10 @@
 
 using namespace std;
 
-void Stacker(TString path,TString cut,double Br)
+void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 {
-	TString MCSamples[10]={"wt", "ZZ","H2WWleptonic", "WlepZmue","WincZtautau",  "H2tt", "ttbar", "WWleptonic",  "Z2tt_highmass","H2tm"};
-	Int_t   MCcolors[10]={ kMagenta+3, kMagenta,kBlue+1,kOrange+1,kOrange,  kGreen, kRed, kYellow, kCyan, kBlack};
+	TString MCSamples[11]={"wt", "ZZ","H2WWleptonic", "WlepZmue","WincZtautau",  "H2tt", "ttbar", "WWleptonic",  "Z2tt_highmass","H2tm","H2te"};
+	Int_t   MCcolors[11]={ kMagenta+3, kMagenta,kBlue+1,kOrange+1,kOrange,  kGreen, kRed, kYellow, kCyan, kBlack, kBlack+2};
 
 	TCanvas* c1 = new TCanvas("canvasLog"+cut,"canvasLog"+cut,600,600);
 	c1->SetLogy();
@@ -42,12 +42,14 @@ void Stacker(TString path,TString cut,double Br)
 	TH1D* signal_ME = (TH1D*)fs->Get("ME_Mcoll");
 	signal_ME->SetName("signal_ME_Mcoll");
 
-	double signal_c = Br*10;
-	cout<<"Br*10 = "<<signal_c<<endl;
+	double signalME_c = ME_Br*10;
+	double signalEM_c = EM_Br*10;
 
-	double c[10]={0.47, 0.1584,0.008743268,0.009968992,0.0153296,0.00327,0.120508602,0.2204,0.118279925,signal_c*0.013502715};
+//	cout<<"Br*10 = "<<signalME_c<<endl;
 
-	for(int i=0; i<10; i++)
+	double c[11]={0.47, 0.1584,0.008743268,0.009968992,0.0153296,0.00327,0.120508602,0.2204,0.118279925,signalME_c*0.013502715,signalEM_c*0.00666742};
+
+	for(int i=0; i<11; i++)
 		{
 			TFile* f = new TFile(path+MCSamples[i]+"_"+cut+".root");
 			TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
@@ -98,18 +100,21 @@ void Stacker(TString path,TString cut,double Br)
 	hs2->Draw("hist");
 	leg->Draw();
 
-	std::ostringstream strs;
-	strs << Br;
-	std::string strBr = strs.str();
-	cout<<strBr<<endl;
+	std::ostringstream strsME;
+	strsME << ME_Br;
+	std::string strBrME = strsME.str();
+//	cout<<strBrME<<endl;
+	std::ostringstream strsEM;
+	strsEM << EM_Br;
+	std::string strBrEM = strsEM.str();
 
-	TFile *outputf = new TFile("MCStacked_"+cut+"BR"+strBr+".root","RECREATE");
+	TFile *outputf = new TFile("MCStacked_"+cut+"BR_ME"+strBrME+"BR_EM"+strBrEM+".root","RECREATE");
 
 	hs2->Write();
 	hs3->Write();
 	EM_sum->Write();
 	ME_sum->Write();
-	signal_ME->Scale(c[9]);
+	signal_ME->Scale(c[10]);
 	signal_ME->Write();
 
 	c1->Write();
