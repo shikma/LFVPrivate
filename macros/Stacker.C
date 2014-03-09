@@ -17,8 +17,10 @@ using namespace std;
 
 void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 {
-	TString MCSamples[11]={"wt", "ZZ","H2WWleptonic", "WlepZmue","WincZtautau",  "H2tt", "ttbar", "WWleptonic",  "Z2tt_highmass","H2tm","H2te"};
-	Int_t   MCcolors[11]={ kMagenta+3, kMagenta,kBlue+1,kOrange+1,kOrange,  kGreen, kRed, kYellow, kCyan, kBlack, kBlack+2};
+	TString MCSamples[11]={"wt", "ZZ","H2WWleptonic", "WlepZmue","WincZtautau",
+			"H2tt", "ttbar", "WWleptonic",  "Z2tt_highmass","H2tm","H2te_tau2mu"};
+	Int_t   MCcolors[11]={ kMagenta+3, kMagenta,kBlue+1,kOrange+1,kOrange,
+			kGreen, kRed, kYellow, kCyan, kBlack, kBlack+2};
 
 	TCanvas* c1 = new TCanvas("canvasLog"+cut,"canvasLog"+cut,600,600);
 	c1->SetLogy();
@@ -47,7 +49,8 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 
 //	cout<<"Br*10 = "<<signalME_c<<endl;
 
-	double c[11]={0.47, 0.1584,0.008743268,0.009968992,0.0153296,0.00327,0.120508602,0.2204,0.118279925,signalME_c*0.013502715,signalEM_c*0.00666742};
+	double c[11]={0.47, 0.1584,0.008743268,0.009968992,0.0153296,
+			0.00327,0.120508602,0.2204,0.118279925,signalME_c*0.013502715,signalEM_c*0.00666742};
 
 	for(int i=0; i<11; i++)
 		{
