@@ -117,7 +117,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	hsStackedEM->Write();
 	EM_sum->Write();
 	ME_sum->Write();
-	signal_ME->Scale(c[10]);
+	signal_ME->Scale(c[9]);
 	signal_ME->Write();
 
 	c1->Write();
