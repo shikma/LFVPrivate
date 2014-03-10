@@ -57,7 +57,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 			TFile* f = new TFile(path+MCSamples[i]+"_"+cut+".root");
 			TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
 			TH1D* h_EM = (TH1D*)f->Get("EM_Mcoll");
-			h_ME->Scale(0.5*c[i]); h_EM->Scale(0.5*c[i]);
+			h_ME->Scale(c[i]); h_EM->Scale(c[i]);
 			h_ME->Rebin(5); h_EM->Rebin(5);
 			h_ME->SetLineColor(MCcolors[i]); h_EM->SetLineColor(MCcolors[i]);
 			h_EM->SetLineStyle(7);
@@ -111,7 +111,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	strsEM << EM_Br;
 	std::string strBrEM = strsEM.str();
 
-	TFile *outputf = new TFile("half_MCStacked_"+cut+"BR_ME"+strBrME+"BR_EM"+strBrEM+".root","RECREATE");
+	TFile *outputf = new TFile("MCStacked_"+cut+"BR_ME"+strBrME+"BR_EM"+strBrEM+".root","RECREATE");
 
 	hsStackedME->Write();
 	hsStackedEM->Write();
