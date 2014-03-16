@@ -36,7 +36,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	THStack* hs = new THStack("ME_EM","ME_EM");
 	THStack* hsStackedME = new THStack("stacked_ME","#bf{#mu}e Channel;"
 			"M_{collinear};Events /4 GeV");
-	THStack* hsStackedEM = new THStack("stacked_EM","#bf{e}#mu Channel;"
+	THStack* hsStackedEM = new THStack("stacked_EM","e#mu Channel;"
 			"M_{collinear};Events /4 GeV");
 
 	TH1D* EM_sum = new TH1D("EM_sum","EM_sum",250,0,500);
@@ -124,7 +124,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 			h_ME->SetLineColor(MCcolorsGrouped[i]); h_EM->SetLineColor(MCcolorsGrouped[i]);
 			h_ME_l->SetLineColor(MCcolorsGrouped[i]); h_EM_l->SetLineColor(MCcolorsGrouped[i]);
 			h_ME->SetFillColor(MCcolorsGrouped[i]); h_EM->SetFillColor(MCcolorsGrouped[i]);
-			h_EM->SetLineStyle(7); h_EM_l->SetLineStyle(7);
+//			h_EM->SetLineStyle(7); h_EM_l->SetLineStyle(7);
 
 			if (i==0){
 				EM_sum = (TH1D*)h_EM->Clone("EM_sum");
