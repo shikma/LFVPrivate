@@ -41,7 +41,8 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	TH1D* ME_sum = new TH1D("ME_sum","ME_sum",250,0,500);
 
 	TFile* fs = new TFile(path+"H2tm_"+cut+".root");
-	TH1D* signal_ME = (TH1D*)fs->Get("ME_Mcoll");
+	TH1D* signal_ME = (TH1D*)fs->Get("ME_Mcoll"); signal_ME->SetLineColor(kBlack);
+	signal_ME->SetLineStyle(7);
 	signal_ME->SetName("signal_ME_Mcoll");
 
 	double signalME_c = ME_Br*10;
@@ -52,7 +53,8 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	double c[11]={0.47, 0.1584,0.008743268,0.009968992,0.0153296,
 			0.00327,0.120508602,0.2204,0.118279925,signalME_c*0.013502715,signalEM_c*0.00666742};
 
-	for(int i=0; i<11; i++)
+	//BG
+	for(int i=0; i<9; i++)
 		{
 			TFile* f = new TFile(path+MCSamples[i]+"_"+cut+".root");
 			TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
@@ -62,12 +64,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 			h_ME->SetLineColor(MCcolors[i]); h_EM->SetLineColor(MCcolors[i]);
 			h_ME->SetFillColor(MCcolors[i]); h_EM->SetFillColor(MCcolors[i]);
 			h_EM->SetLineStyle(7);
-//			h_ME->GetXaxis()->SetRangeUser(0,300); h_EM->GetXaxis()->SetRangeUser(0,300);
-//			TH1D* h_diff = (TH1D*)h_ME->Clone("h_diff");
-//			h_diff->Add(h_EM,-1.);
-//			TH1D* h_sum = (TH1D*)h_ME->Clone("h_sum");
-//			h_sum->Add(h_EM,1.);
-//			h_diff->Divide(h_sum);
+
 			if (i==0){
 				EM_sum = (TH1D*)h_EM->Clone("EM_sum");
 				ME_sum = (TH1D*)h_ME->Clone("ME_sum");
@@ -76,38 +73,62 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 				EM_sum->Add(h_EM);
 				ME_sum->Add(h_ME);
 			}
-//			cout<<"n enetries = "<<EM_sum->GetEntries()<<" ME = "<<ME_sum->GetEntries()<<endl;
 			TH1D* h_ratio = (TH1D*)h_ME->Clone("h_ratio");
 			h_ratio->Divide(h_EM);
 			h_ratio->GetXaxis()->SetRangeUser(0,300); h_ratio->GetYaxis()->SetRangeUser(0,20);
-//			c2->cd();
-//			h_diff->Draw("sames");
 			hs->Add(h_ME); hs->Add(h_EM);
 			hsStackedME->Add(h_ME);
 			hsStackedEM->Add(h_EM);
-			leg->AddEntry(h_ME,MCSamples[i],"f");
+
 			c3->cd();
 			h_ratio->Draw("sames");
 
 		}
-//	hs->GetXaxis()->SetRange(0,300);
-//	hsStackedME->GetXaxis()->SetRange(0,300);
+	//add Signals
+	for(int i=10;i<=11;i++){
+		TFile* f = new TFile(path+MCSamples[i]+"_"+cut+".root");
+		TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
+		TH1D* h_EM = (TH1D*)f->Get("EM_Mcoll");
+		h_ME->Scale(c[i]); h_EM->Scale(c[i]);
+		h_ME->Rebin(5); h_EM->Rebin(5);
+		h_ME->SetLineColor(MCcolors[i]); h_EM->SetLineColor(MCcolors[i]);
+		h_ME->SetLineStyle(7);h_EM->SetLineStyle(7);
+		EM_sum->Add(h_EM);
+		ME_sum->Add(h_ME);
+		TH1D* h_ratio = (TH1D*)h_ME->Clone("h_ratio");
+		h_ratio->Divide(h_EM);
+		h_ratio->GetXaxis()->SetRangeUser(0,300); h_ratio->GetYaxis()->SetRangeUser(0,20);
+		hs->Add(h_ME); hs->Add(h_EM);
+		c3->cd();
+		h_ratio->Draw("sames");
+	}
+
+	//legend
+	for(int j=11;j>0;j--){
+		TFile* f = new TFile(path+MCSamples[j]+"_"+cut+".root");
+		TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
+		h_ME->SetLineColor(MCcolors[j]);
+		h_ME->SetLineStyle(7);
+		leg->AddEntry(h_ME,MCSamples[j],"f");
+	}
+
+
 	c3->cd();
 	c3->SetTitle("ratio"+cut);
 	leg->Draw();
-//	c2->cd();
-//	leg->Draw();
+
 	c1->cd();
 	hs->Draw("nostack");
 	leg->Draw();
 	c4->cd();
 	hsStackedME->Draw("hist");
+	signal_ME->Draw("sames");
 	leg->Draw();
 
 	std::ostringstream strsME;
 	strsME << ME_Br;
 	std::string strBrME = strsME.str();
-//	cout<<strBrME<<endl;
+
 	std::ostringstream strsEM;
 	strsEM << EM_Br;
 	std::string strBrEM = strsEM.str();
