@@ -34,7 +34,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	leg->SetBorderSize(1);
 
 	THStack* hs = new THStack("ME_EM","ME_EM");
-	THStack* hsStackedME = new THStack("stacked_ME","#mu e Channel;M_{collinear};Events /2 GeV");
+	THStack* hsStackedME = new THStack("stacked_ME","{#mu}e Channel;M_{collinear};Events /2 GeV");
 	THStack* hsStackedEM = new THStack("stacked_EM","stacked_EM");
 
 	TH1D* EM_sum = new TH1D("EM_sum","EM_sum",250,0,500);
@@ -53,16 +53,67 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	double c[11]={0.47, 0.1584,0.008743268,0.009968992,0.0153296,
 			0.00327,0.120508602,0.2204,0.118279925,signalME_c*0.013502715,signalEM_c*0.00666742};
 
+	//group BG
+	//diboson
+	TFile* f_ZZ = new TFile(path+"ZZ_"+cut+".root");
+	TFile* f_WZ1 = new TFile(path+"WlepZmue_"+cut+".root");
+	TFile* f_WZ2 = new TFile(path+"WincZtautau_"+cut+".root");
+	TFile* f_WW = new TFile(path+"WWleptonic_"+cut+".root");
+
+	TH1D* h_ME_ZZ = (TH1D*)f_ZZ->Get("ME_Mcoll");h_ME_ZZ->Scale(c[1]);
+	TH1D* h_EM_ZZ = (TH1D*)f_ZZ->Get("EM_Mcoll");h_EM_ZZ->Scale(c[1]);
+	TH1D* h_ME_WZ1 = (TH1D*)f_WZ1->Get("ME_Mcoll");h_ME_WZ1->Scale(c[3]);
+	TH1D* h_EM_WZ1 = (TH1D*)f_WZ1->Get("EM_Mcoll");h_EM_WZ1->Scale(c[3]);
+	TH1D* h_ME_WZ2 = (TH1D*)f_WZ2->Get("ME_Mcoll");h_ME_WZ2->Scale(c[4]);
+	TH1D* h_EM_WZ2 = (TH1D*)f_WZ2->Get("EM_Mcoll");h_EM_WZ2->Scale(c[4]);
+	TH1D* h_ME_WW = (TH1D*)f_WW->Get("ME_Mcoll");h_ME_WW->Scale(c[7]);
+	TH1D* h_EM_WW = (TH1D*)f_WW->Get("EM_Mcoll");h_EM_WW->Scale(c[7]);
+
+	TH1D* Diboson_ME = new TH1D("Diboson_ME","Diboson_ME",250,0,500);
+	Diboson_ME = (TH1D*)h_ME_ZZ->Clone("ME_Mcoll");
+	Diboson_ME->Add(h_ME_WZ1);Diboson_ME->Add(h_ME_WZ2);Diboson_ME->Add(h_ME_WW);
+	TH1D* Diboson_EM = new TH1D("Diboson_EM","Diboson_EM",250,0,500);
+	Diboson_EM = (TH1D*)h_ME_ZZ->Clone("EM_Mcoll");
+	Diboson_EM->Add(h_EM_WZ1);Diboson_EM->Add(h_EM_WZ2);Diboson_EM->Add(h_EM_WW);
+
+	TFile *diboson_out = new TFile(path+"Diboson_"+cut+".root","RECREATE");
+	Diboson_ME->Write();
+	Diboson_EM->Write();
+	diboson_out->Close();
+
+	//Higgs SM
+	TFile* f_H2WW = new TFile(path+"H2WWleptonic_"+cut+".root");
+	TFile* f_H2tt = new TFile(path+"H2tt_"+cut+".root");
+	TH1D* h_ME_H2WW = (TH1D*)f_H2WW->Get("ME_Mcoll");h_ME_H2WW->Scale(c[2]);
+	TH1D* h_EM_H2WW = (TH1D*)f_H2WW->Get("EM_Mcoll");h_EM_H2WW->Scale(c[2]);
+	TH1D* h_ME_H2tt = (TH1D*)f_H2tt->Get("ME_Mcoll");h_ME_H2tt->Scale(c[5]);
+	TH1D* h_EM_H2tt = (TH1D*)f_H2tt->Get("EM_Mcoll");h_EM_H2tt->Scale(c[5]);
+
+	TH1D* SMHiggs_ME = new TH1D("SMHiggs_ME","SMHiggs_ME",250,0,500);
+	SMHiggs_ME = (TH1D*)h_ME_H2WW->Clone("ME_Mcoll");
+	SMHiggs_ME->Add(h_ME_H2tt);
+	TH1D* SMHiggs_EM = new TH1D("SMHiggs_EM","SMHiggs_EM",250,0,500);
+	SMHiggs_EM = (TH1D*)h_EM_H2WW->Clone("EM_Mcoll");
+	SMHiggs_EM->Add(h_EM_H2tt);
+
+	TFile *SMHiggs_out = new TFile(path+"SMHiggs_"+cut+".root","RECREATE");
+	SMHiggs_ME->Write();
+	SMHiggs_EM->Write();
+	SMHiggs_out->Close();
+
+	TString MCSamplesGrouped[5]={"wt",	"SMHiggs", "ttbar", "Diboson",  "Z2tt_highmass"};
+	Int_t   MCcolorsGrouped[5]={ kMagenta+3,kGreen, kRed, kYellow, kCyan};
+
 	//BG
-	for(int i=0; i<9; i++)
+	for(int i=0; i<5; i++)
 		{
-			TFile* f = new TFile(path+MCSamples[i]+"_"+cut+".root");
+			TFile* f = new TFile(path+MCSamplesGrouped[i]+"_"+cut+".root");
 			TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
 			TH1D* h_EM = (TH1D*)f->Get("EM_Mcoll");
 			h_ME->Scale(c[i]); h_EM->Scale(c[i]);
 //			h_ME->Rebin(5); h_EM->Rebin(5);
-			h_ME->SetLineColor(MCcolors[i]); h_EM->SetLineColor(MCcolors[i]);
-			h_ME->SetFillColor(MCcolors[i]); h_EM->SetFillColor(MCcolors[i]);
+			h_ME->SetLineColor(MCcolorsGrouped[i]); h_EM->SetLineColor(MCcolorsGrouped[i]);
+			h_ME->SetFillColor(MCcolorsGrouped[i]); h_EM->SetFillColor(MCcolorsGrouped[i]);
 			h_EM->SetLineStyle(7);
 
 			if (i==0){
@@ -105,11 +156,11 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 
 	//legend
 	leg->AddEntry(signal_ME,"Signal","f");
-	for(int j=8;j>=0;j--){
-		TFile* f = new TFile(path+MCSamples[j]+"_"+cut+".root");
+	for(int j=4;j>=0;j--){
+		TFile* f = new TFile(path+MCSamplesGrouped[j]+"_"+cut+".root");
 		TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
-		h_ME->SetLineColor(MCcolors[j]);
-		leg->AddEntry(h_ME,MCSamples[j],"f");
+		h_ME->SetLineColor(MCcolorsGrouped[j]);
+		leg->AddEntry(h_ME,MCSamplesGrouped[j],"f");
 	}
 
 
