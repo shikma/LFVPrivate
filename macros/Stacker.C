@@ -26,15 +26,15 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	c1->SetLogy();
 //	TCanvas* c2 = new TCanvas("c_diff","c_diff",600,600);
 	TCanvas* c3 = new TCanvas("c_ratio"+cut,"c_ratio"+cut,600,600);
-	TCanvas* c4 = new TCanvas("canvasStack"+cut,"canvasStack"+cut,600,600);
-	c4->SetLogy();
+	TCanvas* c4 = new TCanvas("canvasStack"+cut,"canvasStack"+cut,600,600);	c4->SetLogy();
+	TCanvas* c5 = new TCanvas("canvasStack2"+cut,"canvasStack2"+cut,600,600); c5->SetLogy();
 
 	TLegend* leg = new TLegend(0.5,0.7,0.7,0.9);
 	leg->SetFillColor(kWhite);
 	leg->SetBorderSize(1);
 
 	THStack* hs = new THStack("ME_EM","ME_EM");
-	THStack* hsStackedME = new THStack("stacked_ME","#bf{#mu}#bf{e} Channel;"
+	THStack* hsStackedME = new THStack("stacked_ME","#bf{#mu}e Channel;"
 			"M_{collinear};Events /4 GeV");
 	THStack* hsStackedEM = new THStack("stacked_EM","stacked_EM");
 
@@ -45,6 +45,9 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	TH1D* signal_ME = (TH1D*)fs->Get("ME_Mcoll"); signal_ME->SetLineColor(kBlack);
 	signal_ME->SetLineStyle(7);
 	signal_ME->SetName("signal_ME_Mcoll");
+	TH1D* signal_EM = (TH1D*)fs->Get("EM_Mcoll"); signal_EM->SetLineColor(kBlack);
+	signal_EM->SetLineStyle(7);
+	signal_EM->SetName("signal_EM_Mcoll");
 
 	double signalME_c = ME_Br*10;
 	double signalEM_c = EM_Br*10;
@@ -178,9 +181,19 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	hs->Draw("nostack");
 	leg->Draw();
 	c4->cd();
-	hsStackedME->Draw("hist");
+	signal_ME->Scale(c[9]);
 	signal_ME->Rebin(2);
-	signal_ME->Draw("sames");
+	hsStackedME->Add(signal_ME);
+	hsStackedME->Draw("hist");
+//	signal_ME->Draw("sames");
+	leg->Draw();
+
+	c4->cd();
+	signal_EM->Scale(c[9]);
+	signal_EM->Rebin(2);
+	hsStackedEM->Add(signal_EM);
+	hsStackedEM->Draw("hist");
+	//	signal_EM->Draw("sames");
 	leg->Draw();
 
 	std::ostringstream strsME;
@@ -197,12 +210,13 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	hsStackedEM->Write();
 	EM_sum->Write();
 	ME_sum->Write();
-	signal_ME->Scale(c[9]);
+
 	signal_ME->Write();
 
 	c1->Write();
 	c4->Write();
 	c3->Write();
+	c5->Write();
 
 	outputf->Close();
 
