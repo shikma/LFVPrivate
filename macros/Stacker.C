@@ -111,7 +111,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 			TFile* f = new TFile(path+MCSamplesGrouped[i]+"_"+cut+".root");
 			TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
 			TH1D* h_EM = (TH1D*)f->Get("EM_Mcoll");
-			h_ME->cGrouped(c[i]); h_EM->cGrouped(c[i]);
+			h_ME->Scale(cGrouped[i]); h_EM->Scale(cGrouped[i]);
 //			h_ME->Rebin(5); h_EM->Rebin(5);
 			h_ME->SetLineColor(MCcolorsGrouped[i]); h_EM->SetLineColor(MCcolorsGrouped[i]);
 			h_ME->SetFillColor(MCcolorsGrouped[i]); h_EM->SetFillColor(MCcolorsGrouped[i]);
