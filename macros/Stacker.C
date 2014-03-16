@@ -34,7 +34,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	leg->SetBorderSize(1);
 
 	THStack* hs = new THStack("ME_EM","ME_EM");
-	THStack* hsStackedME = new THStack("stacked_ME","stacked_ME");
+	THStack* hsStackedME = new THStack("stacked_ME","#mu e Channel;M_{collinear};Events /2 GeV");
 	THStack* hsStackedEM = new THStack("stacked_EM","stacked_EM");
 
 	TH1D* EM_sum = new TH1D("EM_sum","EM_sum",250,0,500);
@@ -60,7 +60,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 			TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
 			TH1D* h_EM = (TH1D*)f->Get("EM_Mcoll");
 			h_ME->Scale(c[i]); h_EM->Scale(c[i]);
-			h_ME->Rebin(5); h_EM->Rebin(5);
+//			h_ME->Rebin(5); h_EM->Rebin(5);
 			h_ME->SetLineColor(MCcolors[i]); h_EM->SetLineColor(MCcolors[i]);
 			h_ME->SetFillColor(MCcolors[i]); h_EM->SetFillColor(MCcolors[i]);
 			h_EM->SetLineStyle(7);
@@ -90,7 +90,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 		TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
 		TH1D* h_EM = (TH1D*)f->Get("EM_Mcoll");
 		h_ME->Scale(c[i]); h_EM->Scale(c[i]);
-		h_ME->Rebin(5); h_EM->Rebin(5);
+//		h_ME->Rebin(5); h_EM->Rebin(5);
 		h_ME->SetLineColor(MCcolors[i]); h_EM->SetLineColor(MCcolors[i]);
 		h_ME->SetLineStyle(7);h_EM->SetLineStyle(7);
 		EM_sum->Add(h_EM);
