@@ -188,7 +188,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 //	signal_ME->Draw("sames");
 	leg->Draw();
 
-	c4->cd();
+	c5->cd();
 	signal_EM->Scale(c[9]);
 	signal_EM->Rebin(2);
 	hsStackedEM->Add(signal_EM);
