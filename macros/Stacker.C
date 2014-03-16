@@ -60,6 +60,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 			h_ME->Scale(c[i]); h_EM->Scale(c[i]);
 			h_ME->Rebin(5); h_EM->Rebin(5);
 			h_ME->SetLineColor(MCcolors[i]); h_EM->SetLineColor(MCcolors[i]);
+			h_ME->SetFillColor(MCcolors[i]); h_EM->SetFillColor(MCcolors[i]);
 			h_EM->SetLineStyle(7);
 //			h_ME->GetXaxis()->SetRangeUser(0,300); h_EM->GetXaxis()->SetRangeUser(0,300);
 //			TH1D* h_diff = (TH1D*)h_ME->Clone("h_diff");
