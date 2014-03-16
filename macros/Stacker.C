@@ -85,7 +85,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 
 		}
 	//add Signals
-	for(int i=10;i<=11;i++){
+	for(int i=9;i<11;i++){
 		TFile* f = new TFile(path+MCSamples[i]+"_"+cut+".root");
 		TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
 		TH1D* h_EM = (TH1D*)f->Get("EM_Mcoll");
@@ -104,7 +104,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	}
 
 	//legend
-	for(int j=11;j>0;j--){
+	for(int j=10;j>=0;j--){
 		TFile* f = new TFile(path+MCSamples[j]+"_"+cut+".root");
 		TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
 		h_ME->SetLineColor(MCcolors[j]);
