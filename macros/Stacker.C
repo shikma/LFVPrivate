@@ -35,9 +35,9 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 
 	THStack* hs = new THStack("ME_EM","ME_EM");
 	THStack* hsStackedME = new THStack("stacked_ME","#bf{#mu}e Channel;"
-			"M_{collinear};Events /4 GeV");
+			"M_{collinear} (GeV);Events /4 GeV");
 	THStack* hsStackedEM = new THStack("stacked_EM","e#mu Channel;"
-			"M_{collinear};Events /4 GeV");
+			"M_{collinear} (GeV);Events /4 GeV");
 
 	TH1D* EM_sum = new TH1D("EM_sum","EM_sum",250,0,500);
 	TH1D* ME_sum = new TH1D("ME_sum","ME_sum",250,0,500);
