@@ -106,7 +106,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	SMHiggs_EM->Write();
 	SMHiggs_out->Close();
 
-	TString MCSamplesGrouped[5]={"wt",	"SMHiggs", "ttbar", "Diboson",  "Z2tt_highmass"};
+	TString MCSamplesGrouped[5]={"wt",	"SMHiggs", "ttbar", "Diboson",  "Z2tt"};
 	Int_t   MCcolorsGrouped[5]={ kMagenta+3,kGreen, kRed, kYellow, kCyan};
 	double cGrouped[5]={0.47, 1,0.120508602,1,0.118279925};
 
