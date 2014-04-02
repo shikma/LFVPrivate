@@ -120,7 +120,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 			TH1D* h_EM_l = (TH1D*)h_EM->Clone();
 			h_ME->Scale(cGrouped[i]); h_EM->Scale(cGrouped[i]);
 			h_ME_l->Scale(cGrouped[i]); h_EM_l->Scale(cGrouped[i]);
-//			h_ME->Rebin(5); h_EM->Rebin(5); h_ME_l->Rebin(5); h_EM_l->Rebin(5);
+			h_ME->Rebin(2); h_EM->Rebin(2); h_ME_l->Rebin(2); h_EM_l->Rebin(2);
 			h_ME->SetLineColor(MCcolorsGrouped[i]); h_EM->SetLineColor(MCcolorsGrouped[i]);
 			h_ME_l->SetLineColor(MCcolorsGrouped[i]); h_EM_l->SetLineColor(MCcolorsGrouped[i]);
 			h_ME->SetFillColor(MCcolorsGrouped[i]); h_EM->SetFillColor(MCcolorsGrouped[i]);
@@ -151,7 +151,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 		TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
 		TH1D* h_EM = (TH1D*)f->Get("EM_Mcoll");
 		h_ME->Scale(c[i]); h_EM->Scale(c[i]);
-//		h_ME->Rebin(5); h_EM->Rebin(5);
+		h_ME->Rebin(2); h_EM->Rebin(2);
 		h_ME->SetLineColor(MCcolors[i]); h_EM->SetLineColor(MCcolors[i]);
 		h_ME->SetLineStyle(7);h_EM->SetLineStyle(7);
 		EM_sum->Add(h_EM);
@@ -183,7 +183,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	leg->Draw();
 	c4->cd();
 	signal_ME->Scale(c[9]);
-//	signal_ME->Rebin(5);
+	signal_ME->Rebin(2);
 	hsStackedME->Add(signal_ME);
 	hsStackedME->Draw("hist");
 //	signal_ME->Draw("sames");
@@ -191,7 +191,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 
 	c5->cd();
 	signal_EM->Scale(c[9]);
-//	signal_EM->Rebin(5);
+	signal_EM->Rebin(2);
 	hsStackedEM->Add(signal_EM);
 	hsStackedEM->Draw("hist");
 	//	signal_EM->Draw("sames");
