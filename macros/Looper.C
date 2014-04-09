@@ -133,7 +133,7 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 
 	  		if (useCuts){
 	  			//Opposite Sign
-	  			if (data->electronSign[0]==data->muonSign[0]){continue; }
+	  			if (data->electronQ[0]==data->muonQ[0]){continue; }
 	  			n_passOppositeSign++;
 	  			//L1 Pt
 	  			if ((ElPt >= MuPt)&&(MuPt < L1_PT_CUT)){continue; }
