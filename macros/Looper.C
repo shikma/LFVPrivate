@@ -101,6 +101,10 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 //	 		if (abs(data->muonEta[i])>2.1){n_m--; }
 //	 	}
 
+	 	//check if sorted
+	 	if ((n_e > 1)&&(data->electronPt[0] < data->electronPt[1])){cout<<"NOT SORTED!"<<endl;}
+	 	if ((n_m > 1)&&(data->muonPt[0] < data->muonPt[1])){cout<<"NOT SORTED!"<<endl;}
+
 	  	if (useEM) {
 	  		if (n_e!=1 || n_m!=1){continue; 	}
 	  		n_pass2DifferentFlavor++;
