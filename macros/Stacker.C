@@ -17,10 +17,15 @@ using namespace std;
 
 void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 {
-	TString MCSamples[11]={"wt", "ZZ","H2WWleptonic", "WlepZmue","WincZtautau",
-			"H2tt", "ttbar", "WWleptonic",  "Z2tt","H2tm","H2te_tau2mu"};
-	Int_t   MCcolors[11]={ kMagenta+3, kMagenta,kBlue+1,kOrange+1,kOrange,
-			kGreen, kRed, kYellow, kCyan, kBlack, kBlack};
+//	TString MCSamples[11]={"wt", "ZZ","H2WWleptonic", "WlepZmue","WincZtautau",
+//			"H2tt", "ttbar", "WWleptonic",  "Z2tt","H2tm","H2te_tau2mu"};
+//	Int_t   MCcolors[11]={ kMagenta+3, kMagenta,kBlue+1,kOrange+1,kOrange,
+//			kGreen, kRed, kYellow, kCyan, kBlack, kBlack};
+
+	TString MCSamples[9]={"ZZ","H2WWleptonic", "WlepZmue","WincZtautau",
+				"H2tt", "WWleptonic",  "Z2tt","H2tm","H2te"};
+	Int_t   MCcolors[11]={kMagenta,kBlue+1,kOrange+1,kOrange,
+				kGreen, kYellow, kCyan, kBlack, kBlack};
 
 	TCanvas* c1 = new TCanvas("canvasLog"+cut,"canvasLog"+cut,600,600);
 	c1->SetLogy();
@@ -55,8 +60,11 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 
 //	cout<<"Br*10 = "<<signalME_c<<endl;
 
-	double c[11]={0.47, 0.1584,0.008743268,0.009968992,0.0153296,
-			0.00327,0.120508602,0.2204,0.118279925,signalME_c*0.013502715,signalEM_c*0.00666742};
+//	double c[11]={0.47, 0.1584,0.008743268,0.009968992,0.0153296,
+//			0.00327,0.120508602,0.2204,0.118279925,signalME_c*0.013502715,signalEM_c*0.00666742};
+
+	double c[9]={0.1584,0.008743268,0.009968992,0.0153296,
+				0.00327,0.2204,0.118279925,signalME_c*0.013502715,signalEM_c*0.013502715};
 
 	//group BG
 	//diboson
@@ -65,14 +73,14 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	TFile* f_WZ2 = new TFile(path+"WincZtautau_"+cut+".root");
 	TFile* f_WW = new TFile(path+"WWleptonic_"+cut+".root");
 
-	TH1D* h_ME_ZZ = (TH1D*)f_ZZ->Get("ME_Mcoll");h_ME_ZZ->Scale(c[1]);
-	TH1D* h_EM_ZZ = (TH1D*)f_ZZ->Get("EM_Mcoll");h_EM_ZZ->Scale(c[1]);
-	TH1D* h_ME_WZ1 = (TH1D*)f_WZ1->Get("ME_Mcoll");h_ME_WZ1->Scale(c[3]);
-	TH1D* h_EM_WZ1 = (TH1D*)f_WZ1->Get("EM_Mcoll");h_EM_WZ1->Scale(c[3]);
-	TH1D* h_ME_WZ2 = (TH1D*)f_WZ2->Get("ME_Mcoll");h_ME_WZ2->Scale(c[4]);
-	TH1D* h_EM_WZ2 = (TH1D*)f_WZ2->Get("EM_Mcoll");h_EM_WZ2->Scale(c[4]);
-	TH1D* h_ME_WW = (TH1D*)f_WW->Get("ME_Mcoll");h_ME_WW->Scale(c[7]);
-	TH1D* h_EM_WW = (TH1D*)f_WW->Get("EM_Mcoll");h_EM_WW->Scale(c[7]);
+	TH1D* h_ME_ZZ = (TH1D*)f_ZZ->Get("ME_Mcoll");h_ME_ZZ->Scale(c[0]);//1
+	TH1D* h_EM_ZZ = (TH1D*)f_ZZ->Get("EM_Mcoll");h_EM_ZZ->Scale(c[0]);//1
+	TH1D* h_ME_WZ1 = (TH1D*)f_WZ1->Get("ME_Mcoll");h_ME_WZ1->Scale(c[2]);//3
+	TH1D* h_EM_WZ1 = (TH1D*)f_WZ1->Get("EM_Mcoll");h_EM_WZ1->Scale(c[2]);//3
+	TH1D* h_ME_WZ2 = (TH1D*)f_WZ2->Get("ME_Mcoll");h_ME_WZ2->Scale(c[3]);//4
+	TH1D* h_EM_WZ2 = (TH1D*)f_WZ2->Get("EM_Mcoll");h_EM_WZ2->Scale(c[3]);//4
+	TH1D* h_ME_WW = (TH1D*)f_WW->Get("ME_Mcoll");h_ME_WW->Scale(c[5]);//7
+	TH1D* h_EM_WW = (TH1D*)f_WW->Get("EM_Mcoll");h_EM_WW->Scale(c[5]);//7
 
 	TH1D* Diboson_ME = new TH1D("Diboson_ME","Diboson_ME",250,0,500);
 	Diboson_ME = (TH1D*)h_ME_ZZ->Clone("ME_Mcoll");
@@ -106,12 +114,15 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	SMHiggs_EM->Write();
 	SMHiggs_out->Close();
 
-	TString MCSamplesGrouped[5]={"wt",	"SMHiggs", "ttbar", "Diboson",  "Z2tt"};
-	Int_t   MCcolorsGrouped[5]={ kMagenta+3,kGreen, kRed, kYellow, kCyan};
-	double cGrouped[5]={0.47, 1,0.120508602,1,0.118279925};
+//	TString MCSamplesGrouped[5]={"wt",	"SMHiggs", "ttbar", "Diboson",  "Z2tt"};
+	TString MCSamplesGrouped[5]={"wt",	"SMHiggs", "Diboson",  "Z2tt"};
+//	Int_t   MCcolorsGrouped[5]={ kMagenta+3,kGreen, kRed, kYellow, kCyan};
+	Int_t   MCcolorsGrouped[5]={kGreen, kYellow, kCyan};
+//	double cGrouped[5]={0.47, 1,0.120508602,1,0.118279925};
+	double cGrouped[3]={ 1,1,0.118279925};
 
 	//BG
-	for(int i=0; i<5; i++)
+	for(int i=0; i<3; i++)//5
 		{
 			TFile* f = new TFile(path+MCSamplesGrouped[i]+"_"+cut+".root");
 			TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
@@ -146,7 +157,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 
 		}
 	//add Signals
-	for(int i=9;i<11;i++){
+	for(int i=7;i<9;i++){//9 11
 		TFile* f = new TFile(path+MCSamples[i]+"_"+cut+".root");
 		TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
 		TH1D* h_EM = (TH1D*)f->Get("EM_Mcoll");
@@ -166,7 +177,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 
 	//legend
 	leg->AddEntry(signal_ME,"Signal","f");
-	for(int j=4;j>=0;j--){
+	for(int j=2;j>=0;j--){//4
 		TFile* f = new TFile(path+MCSamplesGrouped[j]+"_"+cut+".root");
 		TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
 		h_ME->SetLineColor(MCcolorsGrouped[j]);
@@ -182,7 +193,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	hs->Draw("nostack");
 	leg->Draw();
 	c4->cd();
-	signal_ME->Scale(c[9]);
+	signal_ME->Scale(c[7]);//9
 	signal_ME->Rebin(2);
 	hsStackedME->Add(signal_ME);
 	hsStackedME->Draw("hist");
@@ -190,7 +201,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	leg->Draw();
 
 	c5->cd();
-	signal_EM->Scale(c[9]);
+	signal_EM->Scale(c[7]);//9
 	signal_EM->Rebin(2);
 	hsStackedEM->Add(signal_EM);
 	hsStackedEM->Draw("hist");
