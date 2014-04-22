@@ -182,7 +182,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 		TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
 		h_ME->SetLineColor(MCcolorsGrouped[j]);
 		h_ME->SetFillColor(MCcolorsGrouped[j]);
-		leg->AddEntry(h_ME,MCSamplesGrouped[j],"l");
+		leg->AddEntry(h_ME,MCSamplesGrouped[j],"f");
 	}
 
 
