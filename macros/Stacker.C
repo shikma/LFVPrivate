@@ -181,6 +181,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 		TFile* f = new TFile(path+MCSamplesGrouped[j]+cut+".root");
 		TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
 		h_ME->SetLineColor(MCcolorsGrouped[j]);
+		h_ME->SetFillColor(MCcolorsGrouped[j]);
 		leg->AddEntry(h_ME,MCSamplesGrouped[j],"l");
 	}
 
