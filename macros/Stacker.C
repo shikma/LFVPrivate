@@ -49,10 +49,10 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 
 	TFile* fs = new TFile(path+"H2tm"+cut+".root");
 	TH1D* signal_ME = (TH1D*)fs->Get("ME_Mcoll"); signal_ME->SetLineColor(kBlack);
-	signal_ME->SetLineStyle(3);
+	signal_ME->SetLineStyle(2);
 	signal_ME->SetName("signal_ME_Mcoll");
 	TH1D* signal_EM = (TH1D*)fs->Get("EM_Mcoll"); signal_EM->SetLineColor(kBlack);
-	signal_EM->SetLineStyle(3);
+	signal_EM->SetLineStyle(2);
 	signal_EM->SetName("signal_EM_Mcoll");
 
 	double signalME_c = ME_Br*10;
@@ -164,7 +164,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 		h_ME->Scale(c[i]); h_EM->Scale(c[i]);
 		h_ME->Rebin(2); h_EM->Rebin(2);
 		h_ME->SetLineColor(MCcolors[i]); h_EM->SetLineColor(MCcolors[i]);
-		h_ME->SetLineStyle(3);h_EM->SetLineStyle(3);
+		h_ME->SetLineStyle(2);h_EM->SetLineStyle(2);
 		EM_sum->Add(h_EM);
 		ME_sum->Add(h_ME);
 		TH1D* h_ratio = (TH1D*)h_ME->Clone("h_ratio");
