@@ -12,12 +12,14 @@
 #include <math.h>
 #include "TRandom.h"
 #include "LFVPrivate/DetectorData.h"
+#include "LFVPrivate/constants.h"
 
 using namespace std;
 using namespace DetectorData;
 
 void AddDetectorEffects(TString infile,TString outfile)
 {
+	InitExterns();
 	const int kMaxTrack = 10;	// maximal number of particles in a single event.
 	
 	
