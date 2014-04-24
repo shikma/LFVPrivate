@@ -296,8 +296,8 @@ void AddDetectorEffects(TString infile,TString outfile)
 		// I say effective because the met is calculated from the particles, but we "delete" some of them...
 		float mean = data->metPt;
 		float sd = DeviationForParameter("metPt",mean);
-		TRandom r; r.SetSeed(12);
-		metPt = r.Gaus(mean,sd);
+//		TRandom r; r.SetSeed(12);
+		metPt = RAND.Gaus(mean,sd);
 
 				//sqrt(-2*log(float(rand())/RAND_MAX))*cos(2*M_PI*float(rand())/RAND_MAX);
 
