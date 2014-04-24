@@ -10,6 +10,7 @@
 #include <iostream>
 #include <fstream>
 #include <math.h>
+#include "TRandom.h"
 #include "LFVPrivate/DetectorData.h"
 
 using namespace std;
