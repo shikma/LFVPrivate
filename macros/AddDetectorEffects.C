@@ -10,18 +10,18 @@
 #include <iostream>
 #include <fstream>
 #include <math.h>
+#include "LFVPrivate/DetectorData.h"
 
 using namespace std;
+using namespace DetectorData;
 
 void AddDetectorEffects(TString infile,TString outfile)
 {
-	const int kMaxTrack = 10;	// maximal number of particles in a single event. @@@
+	const int kMaxTrack = 10;	// maximal number of particles in a single event.
 	
 	
-	int evt = -999;	// probably a flag
+	int evt = -999;
 	
-	
-	// definitions for the braches in the tree. some are scalars (# of particles prob) and some are vectors (info. for each particle)
 	int nPhoton = 0;
 	float photonPt[kMaxTrack];
 	float photonEta[kMaxTrack];
@@ -86,9 +86,8 @@ void AddDetectorEffects(TString infile,TString outfile)
 	float metEta = -999.;
 	float metPhi = -999.;
 
-	float sf_mu_reco_eff[kMaxTrack];	// muon reco efficiency
-	float sf_el_reco_eff[kMaxTrack];	// electron reco efficiency
-	// I forgot what sf stands for so that's something... @@@
+	float sf_mu_reco_eff[kMaxTrack];	// scale factor muon reco efficiency
+	float sf_el_reco_eff[kMaxTrack];	// scale factor electron reco efficiency
 	
 	
 	TFile f(outfile,"recreate");	// the file and tree
@@ -173,8 +172,8 @@ void AddDetectorEffects(TString infile,TString outfile)
 	chain->Add("../run/"+infile+"/t");
 	TTree* tree = chain;
 	
-	SimData* data = new SimData(tree);	// @@@ where is this from? what is SimData? what is fChain?
-										// what is life? baby don't hurt me. don't hurt me no more.
+	SimData* data = new SimData(tree);
+
     if(data->fChain == 0) {
 		cout << " fchain is empty" << endl;
 	}
@@ -216,52 +215,52 @@ void AddDetectorEffects(TString infile,TString outfile)
 			electronEta[i] = data->electronEta[i];
 			electronPhi[i] = data->electronPhi[i];
 			electronQ[i] = data->electronQ[i];
-			electronTag[i] = data->electronTag[i];
-			electronCal02[i] = data->electronCal02[i];
-			electronCal03[i] = data->electronCal03[i];
-			electronCal04[i] = data->electronCal04[i];
-			electronTrk02[i] = data->electronTrk02[i];
-			electronTrk03[i] = data->electronTrk03[i];
-			electronTrk04[i] = data->electronTrk04[i];
-			electronSign[i] = data->electronSign[i];
+//			electronTag[i] = data->electronTag[i];
+//			electronCal02[i] = data->electronCal02[i];
+//			electronCal03[i] = data->electronCal03[i];
+//			electronCal04[i] = data->electronCal04[i];
+//			electronTrk02[i] = data->electronTrk02[i];
+//			electronTrk03[i] = data->electronTrk03[i];
+//			electronTrk04[i] = data->electronTrk04[i];
+//			electronSign[i] = data->electronSign[i];
 			
 			muonPt[i] = data->muonPt[i];
 			muonEta[i] = data->muonEta[i];
 			muonPhi[i] = data->muonPhi[i];
 			muonQ[i] = data->muonQ[i];
-			muonTag[i] = data->muonTag[i];
-			muonCal02[i] = data->muonCal02[i];
-			muonCal03[i] = data->muonCal03[i];
-			muonCal04[i] = data->muonCal04[i];
-			muonTrk02[i] = data->muonTrk02[i];
-			muonTrk03[i] = data->muonTrk03[i];
-			muonTrk04[i] = data->muonTrk04[i];
-			muonSign[i] = data->muonSign[i];
+//			muonTag[i] = data->muonTag[i];
+//			muonCal02[i] = data->muonCal02[i];
+//			muonCal03[i] = data->muonCal03[i];
+//			muonCal04[i] = data->muonCal04[i];
+//			muonTrk02[i] = data->muonTrk02[i];
+//			muonTrk03[i] = data->muonTrk03[i];
+//			muonTrk04[i] = data->muonTrk04[i];
+//			muonSign[i] = data->muonSign[i];
 
 			tauPt[i] = data->tauPt[i];
 			tauEta[i] = data->tauEta[i];
 			tauPhi[i] = data->tauPhi[i];
 			tauQ[i] = data->tauQ[i];
-			tauTag[i] = data->tauTag[i];
-			tauCal02[i] = data->tauCal02[i];
-			tauCal03[i] = data->tauCal03[i];
-			tauCal04[i] = data->tauCal04[i];
-			tauTrk02[i] = data->tauTrk02[i];
-			tauTrk03[i] = data->tauTrk03[i];
-			tauTrk04[i] = data->tauTrk04[i];
-			tauSign[i] = data->tauSign[i];
+//			tauTag[i] = data->tauTag[i];
+//			tauCal02[i] = data->tauCal02[i];
+//			tauCal03[i] = data->tauCal03[i];
+//			tauCal04[i] = data->tauCal04[i];
+//			tauTrk02[i] = data->tauTrk02[i];
+//			tauTrk03[i] = data->tauTrk03[i];
+//			tauTrk04[i] = data->tauTrk04[i];
+//			tauSign[i] = data->tauSign[i];
 			
 			jetPt[i] = data->jetPt[i];
 			jetEta[i] = data->jetEta[i];
 			jetPhi[i] = data->jetPhi[i];
 			jetQ[i] = data->jetQ[i];
-			jetTag[i] = data->jetTag[i];
-			jetCal02[i] = data->jetCal02[i];
-			jetCal03[i] = data->jetCal03[i];
-			jetCal04[i] = data->jetCal04[i];
-			jetTrk02[i] = data->jetTrk02[i];
-			jetTrk03[i] = data->jetTrk03[i];
-			jetTrk04[i] = data->jetTrk04[i];
+//			jetTag[i] = data->jetTag[i];
+//			jetCal02[i] = data->jetCal02[i];
+//			jetCal03[i] = data->jetCal03[i];
+//			jetCal04[i] = data->jetCal04[i];
+//			jetTrk02[i] = data->jetTrk02[i];
+//			jetTrk03[i] = data->jetTrk03[i];
+//			jetTrk04[i] = data->jetTrk04[i];
 
 		}
 
@@ -269,33 +268,35 @@ void AddDetectorEffects(TString infile,TString outfile)
 		metEta = data->metEta;
 		metPhi = data->metPhi;
 
-
-
 		// smearing and efficiency for electrons
-		for (int i = 0; i < nElectron; i++) { // @@@ is this correct?
-
-			float mean = data->electronPt[i];
-			float sd = 0.1 * mean; // DeviationForParameter("electronPt",mean); // getDeviationForParameter(string name, float value)
-			electronPt[i] = mean + sd * sqrt(-2*log(float(rand())/RAND_MAX))*cos(2*M_PI*float(rand())/RAND_MAX); // Box-Muller method
-
-			sf_el_reco_eff[i] = 0.9; // EfficiencyForParticle("electron", electronPt[i], electronEta[i], electronPhi[i]);
-
-		}
+//		for (int i = 0; i < nElectron; i++) {
+//
+//			float mean = data->electronPt[i];
+//			float sd = DeviationForParameter("electronPt",mean);
+//			// Box-Muller method:
+//			electronPt[i] = mean + sd * sqrt(-2*log(float(rand())/RAND_MAX))*cos(2*M_PI*float(rand())/RAND_MAX);
+//
+//			sf_el_reco_eff[i] = EfficiencyForParticle("electron", electronPt[i], electronEta[i], electronPhi[i]);
+//		}
 
 		// smearing and efficiency for muons
-		for (int i = 0; i < nMuon; i++) {
+//		for (int i = 0; i < nMuon; i++) {
+//
+//			float mean = data->muonPt[i];
+//			float sd = DeviationForParameter("muonPt",mean);
+//			muonPt[i] = mean + sd * sqrt(-2*log(float(rand())/RAND_MAX))*cos(2*M_PI*float(rand())/RAND_MAX);
+//
+//			sf_mu_reco_eff[i] = EfficiencyForParticle("muon", muonPt[i], muonEta[i], muonPhi[i]);
+//		}
 
-			float mean = data->muonPt[i];
-			float sd = 0.1 * mean; // DeviationForParameter("muonPt",mean); // getDeviationForParameter(string name, float value)
-			muonPt[i] = mean + sd * sqrt(-2*log(float(rand())/RAND_MAX))*cos(2*M_PI*float(rand())/RAND_MAX); // Box-Muller method
-
-			sf_mu_reco_eff[i] = 0.7; // EfficiencyForParticle("muon", muonPt[i], muonEta[i], muonPhi[i]);
-		}
-
-		// effective smearing for met. I say effective because the met is calculated from the particles, but we "delete" some of them...
+		// effective smearing for met.
+		// I say effective because the met is calculated from the particles, but we "delete" some of them...
 		float mean = data->metPt;
-		float sd = 0.2 * mean; // DeviationForParameter("metPt",mean); // getDeviationForParameter(string name, float value)
-		metPt = mean + sd * sqrt(-2*log(float(rand())/RAND_MAX))*cos(2*M_PI*float(rand())/RAND_MAX); // Box-Muller method
+		float sd = DeviationForParameter("metPt",mean);
+		TRandom r;
+		metPt = mean + sd * r.Gaus(0,1);
+
+				//sqrt(-2*log(float(rand())/RAND_MAX))*cos(2*M_PI*float(rand())/RAND_MAX);
 
 		t->Fill();
 
