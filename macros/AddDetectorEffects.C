@@ -298,6 +298,7 @@ void AddDetectorEffects(TString infile,TString outfile)
 		float sd = DeviationForParameter("metPt",mean);
 //		TRandom r; r.SetSeed(12);
 		metPt = RAND.Gaus(mean,sd);
+		if (metPt<0){metPt=0;}
 
 				//sqrt(-2*log(float(rand())/RAND_MAX))*cos(2*M_PI*float(rand())/RAND_MAX);
 
