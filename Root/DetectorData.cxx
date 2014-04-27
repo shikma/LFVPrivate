@@ -28,7 +28,7 @@ float DeviationForParameter(TString parameterName, float parameterValue)
 	if (parameterName == "muonPt")
 		return 5;
 	if (parameterName == "metPt")
-		return 0.2 * parameterValue;
+		return 0.8 * parameterValue;
 	
 	return 0; // Avital and Aielet said that smearing only for Pt.
 
