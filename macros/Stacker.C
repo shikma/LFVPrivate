@@ -118,7 +118,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 //	TString MCSamplesGrouped[5]={"SMHiggs", "Diboson",  "Z2tt"};
 	Int_t   MCcolorsGrouped[5]={ kMagenta+3,kGreen, kRed, kYellow, kCyan};
 //	Int_t   MCcolorsGrouped[5]={kGreen, kYellow, kCyan};
-	double cGrouped[5]={0.94, 1,0.120508602,1,0.118279925};
+	double cGrouped[5]={0.9346, 1,0.120508602,1,2};
 //	double cGrouped[3]={ 1,1,0.118279925};
 
 	//BG
