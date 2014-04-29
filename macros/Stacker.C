@@ -22,6 +22,11 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	Int_t   MCcolors[11]={ kMagenta+3, kMagenta,kBlue+1,kOrange+1,kOrange,
 			kGreen, kRed, kYellow, kCyan, kBlack, kBlack};
 
+//	TString MCSamples[9]={"ZZ","H2WWleptonic", "WlepZmue","WincZtautau",
+//				"H2tt", "WWleptonic",  "Z2tt","H2tm","H2te"};
+//	Int_t   MCcolors[11]={kMagenta,kBlue+1,kOrange+1,kOrange,
+//				kGreen, kYellow, kCyan, kBlack, kBlack};
+
 	TCanvas* c1 = new TCanvas("canvasLog"+cut,"canvasLog"+cut,600,600);
 	c1->SetLogy();
 //	TCanvas* c2 = new TCanvas("c_diff","c_diff",600,600);
@@ -36,12 +41,12 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 
 	THStack* hs = new THStack("ME_EM","ME_EM");
 	THStack* hsStackedME = new THStack("stacked_ME","#bf{#mu}e Channel;"
-			"M_{Collinear} (GeV);Events / 4 GeV");
+			"M_{collinear} (GeV);Events /4 GeV");
 	THStack* hsStackedEM = new THStack("stacked_EM","e#mu Channel;"
-			"M_{Collinear} (GeV);Events / 4 GeV");
+			"M_{collinear} (GeV);Events /4 GeV");
 
-	TH1D* EM_sum = new TH1D("EM_sum",";M_{Collinear} (GeV);Events / 4 GeV",250,0,500);
-	TH1D* ME_sum = new TH1D("ME_sum",";M_{Collinear} (GeV);Events / 4 GeV",250,0,500);
+	TH1D* EM_sum = new TH1D("EM_sum","EM_sum",250,0,500);
+	TH1D* ME_sum = new TH1D("ME_sum","ME_sum",250,0,500);
 
 	TFile* fs = new TFile(path+"H2tm"+cut+".root");
 	TH1D* signal_ME = (TH1D*)fs->Get("ME_Mcoll"); signal_ME->SetLineColor(kBlack);
@@ -128,7 +133,6 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 			h_ME->Scale(cGrouped[i]); h_EM->Scale(cGrouped[i]);
 			h_ME_l->Scale(cGrouped[i]); h_EM_l->Scale(cGrouped[i]);
 			h_ME->Rebin(2); h_EM->Rebin(2); h_ME_l->Rebin(2); h_EM_l->Rebin(2);
-			h_ME->GetXaxis()->SetRangeUser(0,300); h_EM->GetXaxis()->SetRangeUser(0,300);
 			h_ME->SetLineColor(MCcolorsGrouped[i]); h_EM->SetLineColor(MCcolorsGrouped[i]);
 			h_ME_l->SetLineColor(MCcolorsGrouped[i]); h_EM_l->SetLineColor(MCcolorsGrouped[i]);
 			h_ME->SetFillColor(MCcolorsGrouped[i]); h_EM->SetFillColor(MCcolorsGrouped[i]);
@@ -148,7 +152,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 			hs->Add(h_ME_l); hs->Add(h_EM_l);
 			hsStackedME->Add(h_ME);
 			hsStackedEM->Add(h_EM);
-			hsStackedME->GetXaxis()->SetRangeUser(0,300);
+
 			c3->cd();
 			h_ratio->Draw("sames");
 
@@ -160,7 +164,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 		TH1D* h_EM = (TH1D*)f->Get("EM_Mcoll");
 		h_ME->Scale(c[i]); h_EM->Scale(c[i]);
 		h_ME->Rebin(2); h_EM->Rebin(2);
-		h_ME->GetXaxis()->SetRangeUser(0,300); h_EM->GetXaxis()->SetRangeUser(0,300);
+		h_ME->SetRangeUser(0,300); h_EM->SetRangeUser(0,300)
 		h_ME->SetLineColor(MCcolors[i]); h_EM->SetLineColor(MCcolors[i]);
 		h_ME->SetLineStyle(2);h_EM->SetLineStyle(2);
 		EM_sum->Add(h_EM);
@@ -179,20 +183,18 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	for(int j=4;j>=0;j--){
 		TFile* f = new TFile(path+MCSamplesGrouped[j]+cut+".root");
 		TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
-		h_ME->GetXaxis()->SetRangeUser(0,300);
 		h_ME->SetLineColor(MCcolorsGrouped[j]);
 		h_ME->SetFillColor(MCcolorsGrouped[j]);
 		leg->AddEntry(h_ME,MCSamplesGrouped2[j],"f");
 	}
 
-	ME_sum->GetXaxis()->SetRangeUser(0,300); EM_sum->GetXaxis()->SetRangeUser(0,300);
+	ME_sum->SetRangeUser(0,300); EM_sum->SetRangeUser(0,300);
 	ME_sum->SetLineColor(kBlue); ME_sum->SetFillColor(0);
 	EM_sum->SetLineColor(kGreen+2); EM_sum->SetFillColor(0);
 	TLegend* leg2 = new TLegend(0.5,0.7,0.7,0.9);
 	leg2->SetFillColor(kWhite); leg2->SetLineColor(0);
 	leg2->AddEntry(ME_sum,"#mue sample","l");
 	leg2->AddEntry(EM_sum,"e#mu sample","l");
-	leg2->SetTextFont(4);
 	c6->cd();
 	ME_sum->Draw("E1");
 	EM_sum->Draw("E1 sames");
@@ -208,7 +210,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	leg->Draw();
 	c4->cd();
 	signal_ME->Scale(c[9]);
-	signal_ME->Rebin(2); signal_ME->GetXaxis()->SetRangeUser(0,300);
+	signal_ME->Rebin(2);
 	hsStackedME->Add(signal_ME);
 	hsStackedME->Draw("hist");
 //	signal_ME->Draw("sames");
@@ -217,7 +219,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 
 	c5->cd();
 	signal_EM->Scale(c[9]);
-	signal_EM->Rebin(2); signal_EM->GetXaxis()->SetRangeUser(0,300);
+	signal_EM->Rebin(2);
 	hsStackedEM->Add(signal_EM);
 	hsStackedEM->Draw("hist");
 	//	signal_EM->Draw("sames");
