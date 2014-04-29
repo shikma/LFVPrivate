@@ -164,7 +164,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 		TH1D* h_EM = (TH1D*)f->Get("EM_Mcoll");
 		h_ME->Scale(c[i]); h_EM->Scale(c[i]);
 		h_ME->Rebin(2); h_EM->Rebin(2);
-		h_ME->SetRangeUser(0,300); h_EM->SetRangeUser(0,300)
+		h_ME->GetXaxis()->SetRangeUser(0,300); h_EM->GetXaxis()->SetRangeUser(0,300);
 		h_ME->SetLineColor(MCcolors[i]); h_EM->SetLineColor(MCcolors[i]);
 		h_ME->SetLineStyle(2);h_EM->SetLineStyle(2);
 		EM_sum->Add(h_EM);
@@ -188,7 +188,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 		leg->AddEntry(h_ME,MCSamplesGrouped2[j],"f");
 	}
 
-	ME_sum->SetRangeUser(0,300); EM_sum->SetRangeUser(0,300);
+	ME_sum->GetXaxis()->SetRangeUser(0,300); EM_sum->GetXaxis()->SetRangeUser(0,300);
 	ME_sum->SetLineColor(kBlue); ME_sum->SetFillColor(0);
 	EM_sum->SetLineColor(kGreen+2); EM_sum->SetFillColor(0);
 	TLegend* leg2 = new TLegend(0.5,0.7,0.7,0.9);
