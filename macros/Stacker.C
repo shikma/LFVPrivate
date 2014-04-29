@@ -189,7 +189,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 
 	ME_sum->SetLineColor(kBlue); ME_sum->SetFillColor(0);
 	EM_sum->SetLineColor(kGreen+2); EM_sum->SetFillColor(0);
-	TLegend leg2 = new TLegend(0.5,0.7,0.7,0.9);
+	TLegend* leg2 = new TLegend(0.5,0.7,0.7,0.9);
 	leg2->SetFillColor(kWhite);
 	leg2->AddEntry(ME_sum,"#mue sample","l");
 	leg2->AddEntry(EM_sum,"e#mu sample","l");
