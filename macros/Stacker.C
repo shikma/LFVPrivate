@@ -45,8 +45,8 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	THStack* hsStackedEM = new THStack("stacked_EM","e#mu Channel;"
 			"M_{Collinear} (GeV);Events / 4 GeV");
 
-	TH1D* EM_sum = new TH1D("EM_sum",";M_{Collinear} (GeV);Events / 4 GeV",250,0,500);
-	TH1D* ME_sum = new TH1D("ME_sum",";M_{Collinear} (GeV);Events / 4 GeV",250,0,500);
+	TH1D* EM_sum = new TH1D("EM_sum","sdfdsf;M_{Collinear} (GeV);Events / 4 GeV",250,0,500);
+	TH1D* ME_sum = new TH1D("ME_sum","sdfd;M_{Collinear} (GeV);Events / 4 GeV",250,0,500);
 
 	TFile* fs = new TFile(path+"H2tm"+cut+".root");
 	TH1D* signal_ME = (TH1D*)fs->Get("ME_Mcoll"); signal_ME->SetLineColor(kBlack);
@@ -198,7 +198,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	leg2->SetFillColor(kWhite); leg2->SetLineColor(0);
 	leg2->AddEntry(ME_sum,"#mue sample","l");
 	leg2->AddEntry(EM_sum,"e#mu sample","l");
-	leg2->SetTextFont(4);
+//	leg2->SetTextFont(4);
 	c6->cd();
 	ME_sum->Draw("E1");
 	EM_sum->Draw("E1 sames");
