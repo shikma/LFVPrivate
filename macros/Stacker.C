@@ -22,11 +22,6 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	Int_t   MCcolors[11]={ kMagenta+3, kMagenta,kBlue+1,kOrange+1,kOrange,
 			kGreen, kRed, kYellow, kCyan, kBlack, kBlack};
 
-//	TString MCSamples[9]={"ZZ","H2WWleptonic", "WlepZmue","WincZtautau",
-//				"H2tt", "WWleptonic",  "Z2tt","H2tm","H2te"};
-//	Int_t   MCcolors[11]={kMagenta,kBlue+1,kOrange+1,kOrange,
-//				kGreen, kYellow, kCyan, kBlack, kBlack};
-
 	TCanvas* c1 = new TCanvas("canvasLog"+cut,"canvasLog"+cut,600,600);
 	c1->SetLogy();
 //	TCanvas* c2 = new TCanvas("c_diff","c_diff",600,600);
@@ -45,8 +40,8 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	THStack* hsStackedEM = new THStack("stacked_EM","e#mu Channel;"
 			"M_{Collinear} (GeV);Events / 4 GeV");
 
-	TH1D* EM_sum = new TH1D("EM_sum","sdfdsf",250,0,500);
-	TH1D* ME_sum = new TH1D("ME_sum","sdfd",250,0,500);
+	TH1D* EM_sum = new TH1D("EM_sum",";M_{Collinear} (GeV);Events / 4 GeV",250,0,500);
+	TH1D* ME_sum = new TH1D("ME_sum",";M_{Collinear} (GeV);Events / 4 GeV",250,0,500);
 
 	TFile* fs = new TFile(path+"H2tm"+cut+".root");
 	TH1D* signal_ME = (TH1D*)fs->Get("ME_Mcoll"); signal_ME->SetLineColor(kBlack);
@@ -151,10 +146,9 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 			h_ratio->Divide(h_EM);
 			h_ratio->GetXaxis()->SetRangeUser(0,300); h_ratio->GetYaxis()->SetRangeUser(0,20);
 			hs->Add(h_ME_l); hs->Add(h_EM_l);
-			hsStackedME->GetXaxis()->SetRangeUser(0,300);
 			hsStackedME->Add(h_ME);
 			hsStackedEM->Add(h_EM);
-
+			hsStackedME->GetXaxis()->SetRangeUser(0,300);
 			c3->cd();
 			h_ratio->Draw("sames");
 
