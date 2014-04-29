@@ -61,7 +61,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 //	cout<<"Br*10 = "<<signalME_c<<endl;
 
 	double c[11]={0.9346, 0.1584,0.008744,0.00996899,0.001882,
-			0.003268,0.2204,0.120508,0.2,signalME_c*0.006832495,signalEM_c*0.06671551};
+			0.003268,0.2204,0.120508,0.12,signalME_c*0.006832495,signalEM_c*0.06671551};
 
 //	double c[9]={0.1584,0.008743268,0.009968992,0.0153296,
 //				0.00327,0.2204,0.118279925,signalME_c*0.013502715,signalEM_c*0.013502715};
@@ -118,7 +118,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 //	TString MCSamplesGrouped[5]={"SMHiggs", "Diboson",  "Z2tt"};
 	Int_t   MCcolorsGrouped[5]={ kMagenta+3,kGreen, kRed, kYellow, kCyan};
 //	Int_t   MCcolorsGrouped[5]={kGreen, kYellow, kCyan};
-	double cGrouped[5]={0.9346, 1,0.120508602,1,0.2};
+	double cGrouped[5]={0.9346, 1,0.120508602,1,0.12};
 //	double cGrouped[3]={ 1,1,0.118279925};
 
 	//BG
