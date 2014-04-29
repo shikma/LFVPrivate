@@ -33,6 +33,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	TCanvas* c3 = new TCanvas("c_ratio"+cut,"c_ratio"+cut,600,600);
 	TCanvas* c4 = new TCanvas("canvasStack"+cut,"canvasStack"+cut,600,600);	c4->SetLogy();
 	TCanvas* c5 = new TCanvas("canvasStack2"+cut,"canvasStack2"+cut,600,600); c5->SetLogy();
+	TCanvas* c6 = new TCanvas("canvasEM_ME","canvasEM_ME",600,600); c6->SetLogy();
 
 	TLegend* leg = new TLegend(0.5,0.7,0.7,0.9);
 	leg->SetFillColor(kWhite);
@@ -175,6 +176,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 		h_ratio->Draw("sames");
 	}
 
+	TString MCSamplesGrouped2[5]={"Wt",	"SM Higgs", "t#bar{t}", "Diboson",  "Z#rightarrow#tau#tau"};
 	//legend
 	leg->AddEntry(signal_ME,"Signal","l");
 	for(int j=4;j>=0;j--){
@@ -182,8 +184,18 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 		TH1D* h_ME = (TH1D*)f->Get("ME_Mcoll");
 		h_ME->SetLineColor(MCcolorsGrouped[j]);
 		h_ME->SetFillColor(MCcolorsGrouped[j]);
-		leg->AddEntry(h_ME,MCSamplesGrouped[j],"f");
+		leg->AddEntry(h_ME,MCSamplesGrouped2[j],"f");
 	}
+
+	ME_sum->SetLineColor(kBlue); ME_sum->SetFillColor(0);
+	EM_sum->SetLineColor(kGreen+2); EM_sum->SetFillColor(0);
+	TLegend leg2 = new TLegend(0.5,0.7,0.7,0.9);
+	leg2->SetFillColor(kWhite);
+	leg2->AddEntry(ME_sum,"#mue sample","l");
+	leg2->AddEntry(EM_sum,"e#mu sample","l");
+	c6->cd();
+	ME_sum->Draw("E1");
+	EM_sum->Draw("E1 sames");
 
 
 	c3->cd();
@@ -199,6 +211,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	hsStackedME->Add(signal_ME);
 	hsStackedME->Draw("hist");
 //	signal_ME->Draw("sames");
+	leg->SetLineColor(0);
 	leg->Draw();
 
 	c5->cd();
