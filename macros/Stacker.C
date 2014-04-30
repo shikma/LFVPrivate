@@ -23,17 +23,13 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	Int_t   MCcolors[11]={ kMagenta+3, kMagenta,kBlue+1,kOrange+1,kOrange,
 			kGreen, kRed, kYellow, kCyan, kBlack, kBlack};
 
-//	TString MCSamples[9]={"ZZ","H2WWleptonic", "WlepZmue","WincZtautau",
-//				"H2tt", "WWleptonic",  "Z2tt","H2tm","H2te"};
-//	Int_t   MCcolors[11]={kMagenta,kBlue+1,kOrange+1,kOrange,
-//				kGreen, kYellow, kCyan, kBlack, kBlack};
 
 	TCanvas* c1 = new TCanvas("canvasLog"+cut,"canvasLog"+cut,600,600);
 	c1->SetLogy();
 //	TCanvas* c2 = new TCanvas("c_diff","c_diff",600,600);
 	TCanvas* c3 = new TCanvas("c_ratio"+cut,"c_ratio"+cut,600,600);
-	TCanvas* c4 = new TCanvas("canvasStack"+cut,"canvasStack"+cut,600,600);	c4->SetLogy();
 	TCanvas* c5 = new TCanvas("canvasStack2"+cut,"canvasStack2"+cut,600,600); c5->SetLogy();
+	TCanvas* c4 = new TCanvas("canvasStack"+cut,"canvasStack"+cut,600,600);	c4->SetLogy();
 	TCanvas* c6 = new TCanvas("canvasEM_ME","canvasEM_ME",600,600); c6->SetLogy();
 
 	TLegend* leg = new TLegend(0.5,0.7,0.7,0.9);
@@ -61,8 +57,6 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 
 	double signalME_c = ME_Br*10;
 	double signalEM_c = EM_Br*10;
-
-//	cout<<"Br*10 = "<<signalME_c<<endl;
 
 	double c[11]={0.9346, 0.1584,0.008744,0.00996899,0.001882,
 			0.003268,0.2204,0.120508,0.2,signalME_c*0.006832495,signalEM_c*0.06671551};
