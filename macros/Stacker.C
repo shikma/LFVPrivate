@@ -202,11 +202,11 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	leg2->AddEntry(EM_sum,"e#mu sample","l");
 	leg2->SetTextFont(42);
 	TLatex* t = new TLatex(0.5,0.8,"#sqrt{s} = 8 TeV");
-	t->SetTextSizePixels(18);
+	t->SetTextSize(0.07);
 	c6->cd();
 //	ME_sum->Draw("E1");
 //	EM_sum->Draw("E1 sames");
-//	hsEM_ME->GetXaxis()->SetRangeUser(0,300);
+	hsEM_ME->GetXaxis()->SetRangeUser(0,300);
 	hsEM_ME->Draw("nostack, e1");
 	leg2->Draw();
 	t->Draw();
@@ -223,20 +223,20 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	signal_ME->Scale(c[9]);
 	signal_ME->Rebin(2);
 	hsStackedME->Add(signal_ME);
-//	hsStackedME->GetXaxis()->SetRangeUser(0,300);
+	hsStackedME->GetXaxis()->SetRangeUser(0,300);
 	hsStackedME->Draw("hist");
 //	signal_ME->Draw("sames");
 	leg->SetLineColor(0);
 	leg->Draw();
 
-	c5->cd();
-	signal_EM->Scale(c[9]);
-	signal_EM->Rebin(2);
-	hsStackedEM->Add(signal_EM);
-//	hsStackedEM->GetXaxis()->SetRangeUser(0,300);
-	hsStackedEM->Draw("hist");
-	//	signal_EM->Draw("sames");
-	leg->Draw();
+//	c5->cd();
+//	signal_EM->Scale(c[9]);
+//	signal_EM->Rebin(2);
+//	hsStackedEM->Add(signal_EM);
+////	hsStackedEM->GetXaxis()->SetRangeUser(0,300);
+//	hsStackedEM->Draw("hist");
+//	//	signal_EM->Draw("sames");
+//	leg->Draw();
 
 	std::ostringstream strsME;
 	strsME << ME_Br;
