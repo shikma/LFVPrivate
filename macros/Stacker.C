@@ -1,6 +1,7 @@
 #include "LFVPrivate/SimData.h"
 #include "TFile.h"
 #include "TTree.h"
+#include "TText.h"
 #include "TChain.h"
 #include "TCanvas.h"
 #include "THStack.h"
@@ -199,12 +200,15 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	leg2->SetFillColor(kWhite); leg2->SetLineColor(0);
 	leg2->AddEntry(ME_sum,"#mue sample","l");
 	leg2->AddEntry(EM_sum,"e#mu sample","l");
+	leg2->SetFont(4);
+	TText* t = new TText(0.5,0.8,"#sqrt{s} = 8 TeV");
 	c6->cd();
 //	ME_sum->Draw("E1");
 //	EM_sum->Draw("E1 sames");
 //	hsEM_ME->GetXaxis()->SetRangeUser(0,300);
 	hsEM_ME->Draw("nostack, e1");
 	leg2->Draw();
+	t->Draw();
 
 
 	c3->cd();
