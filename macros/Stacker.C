@@ -41,12 +41,12 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 
 	THStack* hs = new THStack("ME_EM","ME_EM");
 	THStack* hsStackedME = new THStack("stacked_ME","#bf{#mu}e Channel;"
-			"M_{collinear} (GeV);Events /4 GeV");
+			"M_{Collinear} (GeV);Events /4 GeV");
 	THStack* hsStackedEM = new THStack("stacked_EM","e#mu Channel;"
-			"M_{collinear} (GeV);Events /4 GeV");
+			"M_{Collinear} (GeV);Events /4 GeV");
 
-	TH1D* EM_sum = new TH1D("EM_sum","EM_sum",250,0,500);
-	TH1D* ME_sum = new TH1D("ME_sum","ME_sum",250,0,500);
+	TH1D* EM_sum = new TH1D("EM_sum",";M_{Collinear} (GeV);Events /4 GeV",250,0,500);
+	TH1D* ME_sum = new TH1D("ME_sum",";M_{Collinear} (GeV);Events /4 GeV",250,0,500);
 
 	TFile* fs = new TFile(path+"H2tm"+cut+".root");
 	TH1D* signal_ME = (TH1D*)fs->Get("ME_Mcoll"); signal_ME->SetLineColor(kBlack);
@@ -221,6 +221,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	signal_EM->Scale(c[9]);
 	signal_EM->Rebin(2);
 	hsStackedEM->Add(signal_EM);
+	hsStackedEM->GetXaxis()->SetRangeUser(0,300);
 	hsStackedEM->Draw("hist");
 	//	signal_EM->Draw("sames");
 	leg->Draw();
@@ -246,6 +247,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	c4->Write();
 	c3->Write();
 	c5->Write();
+	c6->Write();
 
 	outputf->Close();
 
