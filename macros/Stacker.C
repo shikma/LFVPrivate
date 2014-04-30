@@ -193,6 +193,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	ME_sum->GetXaxis()->SetRangeUser(0,300); EM_sum->GetXaxis()->SetRangeUser(0,300);
 	ME_sum->SetLineColor(kBlue); ME_sum->SetFillColor(0);
 	EM_sum->SetLineColor(kGreen+2); EM_sum->SetFillColor(0);
+	ME_sum->SetOption("E1"); EM_sum->SetOption("E1");
 	hsEM_ME->Add(ME_sum); hsEM_ME->Add(EM_sum);
 	TLegend* leg2 = new TLegend(0.5,0.7,0.7,0.9);
 	leg2->SetFillColor(kWhite); leg2->SetLineColor(0);
@@ -227,7 +228,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	signal_EM->Scale(c[9]);
 	signal_EM->Rebin(2);
 	hsStackedEM->Add(signal_EM);
-	hsStackedEM->GetXaxis()->SetRangeUser(0,300);
+//	hsStackedEM->GetXaxis()->SetRangeUser(0,300);
 	hsStackedEM->Draw("hist");
 	//	signal_EM->Draw("sames");
 	leg->Draw();
