@@ -203,7 +203,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 //	ME_sum->Draw("E1");
 //	EM_sum->Draw("E1 sames");
 //	hsEM_ME->GetXaxis()->SetRangeUser(0,300);
-	hsEM_ME->Draw("nostack");
+	hsEM_ME->Draw("nostack, e1");
 	leg2->Draw();
 
 
