@@ -201,8 +201,8 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	c6->cd();
 //	ME_sum->Draw("E1");
 //	EM_sum->Draw("E1 sames");
-	hsEM_ME->GetXaxis()->SetRangeUser(0,300);
-	hsEM_ME->Draw("nostack E1");
+//	hsEM_ME->GetXaxis()->SetRangeUser(0,300);
+	hsEM_ME->Draw("nostack");
 	leg2->Draw();
 
 
@@ -217,7 +217,7 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	signal_ME->Scale(c[9]);
 	signal_ME->Rebin(2);
 	hsStackedME->Add(signal_ME);
-	hsStackedME->GetXaxis()->SetRangeUser(0,300);
+//	hsStackedME->GetXaxis()->SetRangeUser(0,300);
 	hsStackedME->Draw("hist");
 //	signal_ME->Draw("sames");
 	leg->SetLineColor(0);
