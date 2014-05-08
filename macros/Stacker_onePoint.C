@@ -16,7 +16,7 @@
 
 using namespace std;
 
-void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
+void Stacker_onePoint(TString path,TString cut,double ME_Br,double EM_Br)
 {
 	TString MCSamples[11]={"wt", "ZZ","H2WWleptonic", "WlepZmue","WincZtautau",
 			"H2tt", "ttbar", "WWleptonic",  "Z2tt","H2tm","H2te"};
