@@ -58,8 +58,14 @@ void Stacker(TString path,TString cut,double ME_Br,double EM_Br)
 	double signalME_c = ME_Br*10;
 	double signalEM_c = EM_Br*10;
 
-	double c[11]={0.9346, 0.1584,0.008744,0.00996899,0.001882,
-			0.003268,0.2266,0.120508,0.13644247,signalME_c*0.006832495,signalEM_c*0.006671551};
+//	TString MCSamples[11]={"wt", "ZZ","H2WWleptonic", "WlepZmue","WincZtautau",
+//				"H2tt", "ttbar", "WWleptonic",  "Z2tt","H2tm","H2te"};
+	//14TEV!!!
+	double c[11]={3.5194,0.3544,0.226,0.0226,0.00426,0.00846,0.68412,0.26167,0.25165,
+			signalME_c*0.017675,signalEM_c*0.017259};
+	//8TEV
+	//double c[11]={0.9346, 0.1584,0.008744,0.00996899,0.001882,
+//			0.003268,0.2266,0.120508,0.13644247,signalME_c*0.006832495,signalEM_c*0.006671551};
 
 //	double c[9]={0.1584,0.008743268,0.009968992,0.0153296,
 //				0.00327,0.2204,0.118279925,signalME_c*0.013502715,signalEM_c*0.013502715};
