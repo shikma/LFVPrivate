@@ -16,7 +16,7 @@ using namespace std;
 void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 {
 	//CUT VALUES
-	float L0_PT_CUT = 30;
+	float L0_PT_CUT = 20;
 	float L1_PT_CUT = 20;
 	float dPhi_l0l1_CUT = 2.5;
 	float dPhi_l1Met_CUT = 0.5;
