@@ -7,7 +7,7 @@ void LoadAll()
     gROOT->ProcessLine("#include <vector>");
 
     // Set the include path for all packages
-    gSystem->AddIncludePath("-I/Users/shikma/ATLAS_SVN/LFV/LFVPrivate/");
+    gSystem->AddIncludePath("-I/home/avitald/LFV/LFVPrivate");
     cout << gSystem->GetIncludePath() << endl;
 
     // Load package libraries
@@ -15,5 +15,8 @@ void LoadAll()
 
     //Load additional macros
     gROOT->ProcessLine(".L ../macros/AsciiToNtuple.C+");
+    gROOT->ProcessLine(".L ../macros/AddDetectorEffects.C+");
+    gROOT->ProcessLine(".L ../macros/GetSample.C+");
     gROOT->ProcessLine(".L ../macros/Looper.C+");
+
 }

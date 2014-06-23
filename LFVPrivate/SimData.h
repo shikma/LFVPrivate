@@ -24,60 +24,66 @@ public :
    // Declaration of leaf types
    Int_t           evt;
    Int_t           nPhoton;
-   Float_t         photonPt[1];   //[nPhoton]
-   Float_t         photonEta[1];   //[nPhoton]
-   Float_t         photonPhi[1];   //[nPhoton]
+   Float_t         photonPt[10];   //[nPhoton]
+   Float_t         photonEta[10];   //[nPhoton]
+   Float_t         photonPhi[10];   //[nPhoton]
    Int_t           nElectron;
-   Float_t         electronPt[1];   //[nElectron]
-   Float_t         electronEta[1];   //[nElectron]
-   Float_t         electronPhi[1];   //[nElectron]
-   Int_t           electronQ[1];   //[nElectron]
-   Int_t           electronTag[1];   //[nElectron]
-   Float_t         electronCal02[1];   //[nElectron]
-   Float_t         electronCal03[1];   //[nElectron]
-   Float_t         electronCal04[1];   //[nElectron]
-   Float_t         electronTrk02[1];   //[nElectron]
-   Float_t         electronTrk03[1];   //[nElectron]
-   Float_t         electronTrk04[1];   //[nElectron]
+   Float_t         electronPt[10];   //[nElectron]
+   Float_t         electronEta[10];   //[nElectron]
+   Float_t         electronPhi[10];   //[nElectron]
+   Int_t           electronQ[10];   //[nElectron]
+   Int_t           electronTag[10];   //[nElectron]
+   Float_t         electronCal02[10];   //[nElectron]
+   Float_t         electronCal03[10];   //[nElectron]
+   Float_t         electronCal04[10];   //[nElectron]
+   Float_t         electronTrk02[10];   //[nElectron]
+   Float_t         electronTrk03[10];   //[nElectron]
+   Float_t         electronTrk04[10];   //[nElectron]
+   Float_t		   electronSign[10];
    Int_t           nMuon;
-   Float_t         muonPt[2];   //[nMuon]
-   Float_t         muonEta[2];   //[nMuon]
-   Float_t         muonPhi[2];   //[nMuon]
-   Int_t           muonQ[2];   //[nMuon]
-   Int_t           muonTag[2];   //[nMuon]
-   Float_t         muonCal02[2];   //[nMuon]
-   Float_t         muonCal03[2];   //[nMuon]
-   Float_t         muonCal04[2];   //[nMuon]
-   Float_t         muonTrk02[2];   //[nMuon]
-   Float_t         muonTrk03[2];   //[nMuon]
-   Float_t         muonTrk04[2];   //[nMuon]
+   Float_t         muonPt[10];   //[nMuon]
+   Float_t         muonEta[10];   //[nMuon]
+   Float_t         muonPhi[10];   //[nMuon]
+   Int_t           muonQ[10];   //[nMuon]
+   Int_t           muonTag[10];   //[nMuon]
+   Float_t         muonCal02[10];   //[nMuon]
+   Float_t         muonCal03[10];   //[nMuon]
+   Float_t         muonCal04[10];   //[nMuon]
+   Float_t         muonTrk02[10];   //[nMuon]
+   Float_t         muonTrk03[10];   //[nMuon]
+   Float_t         muonTrk04[10];   //[nMuon]
+   Float_t		   muonSign[10];
    Int_t           nTau;
-   Float_t         tauPt[1];   //[nTau]
-   Float_t         tauEta[1];   //[nTau]
-   Float_t         tauPhi[1];   //[nTau]
-   Int_t           tauQ[1];   //[nTau]
-   Int_t           tauTag[1];   //[nTau]
-   Float_t         tauCal02[1];   //[nTau]
-   Float_t         tauCal03[1];   //[nTau]
-   Float_t         tauCal04[1];   //[nTau]
-   Float_t         tauTrk02[1];   //[nTau]
-   Float_t         tauTrk03[1];   //[nTau]
-   Float_t         tauTrk04[1];   //[nTau]
+   Float_t         tauPt[10];   //[nTau]
+   Float_t         tauEta[10];   //[nTau]
+   Float_t         tauPhi[10];   //[nTau]
+   Int_t           tauQ[10];   //[nTau]
+   Int_t           tauTag[10];   //[nTau]
+   Float_t         tauCal02[10];   //[nTau]
+   Float_t         tauCal03[10];   //[nTau]
+   Float_t         tauCal04[10];   //[nTau]
+   Float_t         tauTrk02[10];   //[nTau]
+   Float_t         tauTrk03[10];   //[nTau]
+   Float_t         tauTrk04[10];   //[nTau]
+   Float_t		   tauSign[10];
    Int_t           nJet;
-   Float_t         jetPt[5];   //[nJet]
-   Float_t         jetEta[5];   //[nJet]
-   Float_t         jetPhi[5];   //[nJet]
-   Int_t           jetQ[5];   //[nJet]
-   Int_t           jetTag[5];   //[nJet]
-   Float_t         jetCal02[5];   //[nJet]
-   Float_t         jetCal03[5];   //[nJet]
-   Float_t         jetCal04[5];   //[nJet]
-   Float_t         jetTrk02[5];   //[nJet]
-   Float_t         jetTrk03[5];   //[nJet]
-   Float_t         jetTrk04[5];   //[nJet]
-   Int_t           metPt;
-   Int_t           metEta;
-   Int_t           metPhi;
+   Float_t         jetPt[10];   //[nJet]
+   Float_t         jetEta[10];   //[nJet]
+   Float_t         jetPhi[10];   //[nJet]
+   Int_t           jetQ[10];   //[nJet]
+   Int_t           jetTag[10];   //[nJet]
+   Float_t         jetCal02[10];   //[nJet]
+   Float_t         jetCal03[10];   //[nJet]
+   Float_t         jetCal04[10];   //[nJet]
+   Float_t         jetTrk02[10];   //[nJet]
+   Float_t         jetTrk03[10];   //[nJet]
+   Float_t         jetTrk04[10];   //[nJet]
+   Float_t         metPt;
+   Float_t         metEta;
+   Float_t         metPhi;
+
+   Float_t         sf_el_reco_eff[10];
+   Float_t         sf_mu_reco_eff[10];
 
    // List of branches
    TBranch        *b_evt;   //!
@@ -97,6 +103,7 @@ public :
    TBranch        *b_electronTrk02;   //!
    TBranch        *b_electronTrk03;   //!
    TBranch        *b_electronTrk04;   //!
+   TBranch        *b_electronSign;
    TBranch        *b_nMuon;   //!
    TBranch        *b_muonPt;   //!
    TBranch        *b_muonEta;   //!
@@ -109,6 +116,7 @@ public :
    TBranch        *b_muonTrk02;   //!
    TBranch        *b_muonTrk03;   //!
    TBranch        *b_muonTrk04;   //!
+   TBranch        *b_muonSign;
    TBranch        *b_nTau;   //!
    TBranch        *b_tauPt;   //!
    TBranch        *b_tauEta;   //!
@@ -121,6 +129,7 @@ public :
    TBranch        *b_tauTrk02;   //!
    TBranch        *b_tauTrk03;   //!
    TBranch        *b_tauTrk04;   //!
+   TBranch        *b_tauSign;
    TBranch        *b_nJet;   //!
    TBranch        *b_jetPt;   //!
    TBranch        *b_jetEta;   //!
@@ -136,6 +145,8 @@ public :
    TBranch        *b_metPt;   //!
    TBranch        *b_metEta;   //!
    TBranch        *b_metPhi;   //!
+   TBranch        *b_sf_el_reco_eff; //!
+   TBranch        *b_sf_mu_reco_eff; //!
 
    SimData(TTree *tree=0);
    virtual ~SimData();
@@ -224,6 +235,7 @@ void SimData::Init(TTree *tree)
    fChain->SetBranchAddress("electronTrk02", electronTrk02, &b_electronTrk02);
    fChain->SetBranchAddress("electronTrk03", electronTrk03, &b_electronTrk03);
    fChain->SetBranchAddress("electronTrk04", electronTrk04, &b_electronTrk04);
+   fChain->SetBranchAddress("electronSign", electronSign, &b_electronSign);
    fChain->SetBranchAddress("nMuon", &nMuon, &b_nMuon);
    fChain->SetBranchAddress("muonPt", muonPt, &b_muonPt);
    fChain->SetBranchAddress("muonEta", muonEta, &b_muonEta);
@@ -236,6 +248,7 @@ void SimData::Init(TTree *tree)
    fChain->SetBranchAddress("muonTrk02", muonTrk02, &b_muonTrk02);
    fChain->SetBranchAddress("muonTrk03", muonTrk03, &b_muonTrk03);
    fChain->SetBranchAddress("muonTrk04", muonTrk04, &b_muonTrk04);
+   fChain->SetBranchAddress("muonSign", muonSign, &b_muonSign);
    fChain->SetBranchAddress("nTau", &nTau, &b_nTau);
    fChain->SetBranchAddress("tauPt", tauPt, &b_tauPt);
    fChain->SetBranchAddress("tauEta", tauEta, &b_tauEta);
@@ -248,6 +261,7 @@ void SimData::Init(TTree *tree)
    fChain->SetBranchAddress("tauTrk02", tauTrk02, &b_tauTrk02);
    fChain->SetBranchAddress("tauTrk03", tauTrk03, &b_tauTrk03);
    fChain->SetBranchAddress("tauTrk04", tauTrk04, &b_tauTrk04);
+   fChain->SetBranchAddress("tauSign", tauSign, &b_tauSign);
    fChain->SetBranchAddress("nJet", &nJet, &b_nJet);
    fChain->SetBranchAddress("jetPt", jetPt, &b_jetPt);
    fChain->SetBranchAddress("jetEta", jetEta, &b_jetEta);
@@ -263,6 +277,10 @@ void SimData::Init(TTree *tree)
    fChain->SetBranchAddress("metPt", &metPt, &b_metPt);
    fChain->SetBranchAddress("metEta", &metEta, &b_metEta);
    fChain->SetBranchAddress("metPhi", &metPhi, &b_metPhi);
+   fChain->SetBranchAddress("metPhi", &metPhi, &b_metPhi);
+   fChain->SetBranchAddress("sf_el_reco_eff", sf_el_reco_eff, &b_sf_el_reco_eff);
+   fChain->SetBranchAddress("sf_mu_reco_eff", sf_mu_reco_eff, &b_sf_mu_reco_eff);
+   
    Notify();
 }
 
