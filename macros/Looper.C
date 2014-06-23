@@ -43,6 +43,8 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
     TH1D* h_muPt = new TH1D("muPt","muPt",150,0,300);
     TH1D* h_elPt_2 = new TH1D("elPt2","elPt2",150,0,300);
     TH1D* h_muPt_2 = new TH1D("muPt2","muPt2",150,0,300);
+    TH1D* h_elPhi = new TH1D("elPhi","elPhi",32,-3.2,3.2);
+    TH1D* h_muPhi = new TH1D("muPhi","muPhi",32,-3.2,3.2);
     TH1D* h_deltaPt = new TH1D("ElPt - MuPt","ElPt - MuPt",200,-100,100);
     TH2D* h_deltaPt_vs_ElPt = new TH2D("deltaPt vs. ElPt","deltaPt vs ElPt",75,0,150,200,-100,100);
     TH1D* h_ME_l0_Pt = new TH1D("ME_l0_Pt","ME_l0_Pt",150,0,300);
@@ -170,6 +172,8 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
 
 			h_elPt_2->Fill(ElPt);
 	  		h_muPt_2->Fill(MuPt);
+	  		h_elPhi->Fill(ElPhi);
+	  		h_muPhi->Fill(MuPhi);
 	  		h_deltaPt->Fill(ElPt-MuPt);
 	  		h_deltaPt_vs_ElPt->Fill(ElPt,ElPt-MuPt);
 
@@ -292,6 +296,8 @@ void Looper(TString infile,TString outfile, bool useEM, bool useCuts)
     	h_ME_Mcoll->Write();
     	h_elPt_2->Write();
     	h_muPt_2->Write();
+    	h_elPhi->Write();
+    	h_muPhi->Write();
     	h_deltaPt->Write();
     	h_deltaPt_vs_ElPt->Write();
 
